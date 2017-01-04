@@ -1,0 +1,123 @@
+    @import "../valo/valo.scss";
+    @mixin colored {
+      @include valo;
+      .v-button {
+        background-image: none;
+        //background-color: #88B04B !important;
+      }
+
+      .rowOfButtons .v-button{
+         margin: 0.5em 2%;
+         width: 100%;
+         font-size : 15px;
+      }
+      .rowOfButtonsPatientPanel .v-button{
+               margin: 0.5em 2%;
+               width: 50%;
+               font-size : 15px;
+            }
+
+      .v-slot-myTextField .v-has-caption, .v-slot-myTextField .v-has-caption .myTextField{
+        margin: 0.5em 2%;
+        width: 80%;
+        font-size : 15px;
+      }
+
+      // panel menu
+      .v-slot-navigationBar, .v-spacing{
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #88B04B;
+      }
+      .navigationBar .v-button{
+            color: white !important; ;
+            padding: 14px 16px;
+            text-align: center;
+            text-decoration: none;
+            background-color: #88B04B !important;
+            border: 0px solid #88B04B;
+            font-weight: bold;
+      }
+
+      .navigationBar .v-button:hover{
+        background-color: #006E51;
+      }
+
+      // labels
+      .v-label {
+        font-family: Helvetica;
+        font-weight: 300;
+        color: black;
+        font-size: 20px;
+      }
+      .v-label-title{
+        font-size: 40px;
+        font-weight: bold;
+        text-decoration: underline;
+      }
+
+
+
+      .v-caption-tabelaBadan span{
+        font-family: Helvetica;
+        font-weight: 300;
+        color: black;
+        font-size: 20px;
+      }
+   
+      .v-grid {
+        border: none;
+        width: 100%;
+        padding:5px;
+        background-color:white;
+      }
+
+      .v-grid-tablewrapper {
+          border: 0px solid #d4d4d4;
+      }
+
+      .v-grid-row:hover, .v-grid-row-stripe:hover {
+        color: black;
+        background-color:black;
+      }
+
+      .v-grid-row  > td,  .v-grid-row  > th {
+        //background-color:white;
+      }
+
+      .v-grid-header .v-grid-cell, .v-panel-caption{
+      	background-color: #a4e246;
+      	background-image: none;
+      	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.05);
+
+      }
+
+      .v-panel-caption span{
+        font-size: 20px;
+      }
+
+            .rowOfButtons .v-button-deleteButton{
+                background-image: none;
+                background-color: #f00; !important;
+            }
+            .rowOfButtons .v-button-editButton, .rowOfButtonsPatientPanel .v-button-editButton{
+                background-image: none;
+                background-color: #cc33ff; !important;
+            }
+            .rowOfButtons .v-button-addResultButton{
+                background-image: none;
+                background-color: #4a89dc; !important;
+            }
+            .rowOfButtons .v-button-addButton, .v-slot-addButton .v-button-addButton{
+                background-image: none;
+                background-color: #00cc00; !important;
+            }
+            .rowOfButtonsPatientPanel .v-button-searchButton, .v-slot-searchButton .v-button-searchButton{
+                background-image: none;
+                background-color: #5484A4; !important;
+            }
+
+
+    }
+    @include colored;
