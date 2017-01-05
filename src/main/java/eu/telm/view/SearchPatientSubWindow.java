@@ -82,10 +82,10 @@ public class SearchPatientSubWindow extends Window {
 
         if (StringUtils.isEmpty(text)) {
             grid.setContainerDataSource(
-                    new BeanItemContainer(Patient.class, repo.getAll()));
+                    new BeanItemContainer(Patient.class, repo.findAll()));
         } else {
             grid.setContainerDataSource(new BeanItemContainer(Patient.class,
-                    repo.getAll()));
+                    repo.findByNazwiskoStartsWithIgnoreCase(text)));
         }
     }
 }

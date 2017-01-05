@@ -1,5 +1,6 @@
 package eu.telm.controller;
 
+import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import eu.telm.model.Realizacje;
@@ -59,17 +60,8 @@ public class PatientController implements Button.ClickListener{
             defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
             //System.out.println(model.getId());
             List<Realizacje> realizacjeList = defaultView.getBadaniaDao().findByPatient_Id( model.getId());
-            Grid badanieGrid = defaultView.getTabelaBadan();
-            badanieGrid.addColumn("Name Pacjenta", String.class);
-            badanieGrid.addColumn("IdBadania", Integer.class);
-            for(Realizacje realizacje : realizacjeList)
-            {
-                ArrayList<Object> newRow = new ArrayList<Object>();
-                newRow.add(realizacje.getWynik());
-                newRow.add(realizacje.getId());
-                System.out.println(realizacje.getPatient().getImie());
-                badanieGrid.addRow(newRow);
-            }
+            defaultView.getTabelaBadan().setContainerDataSource(
+                    new BeanItemContainer(Realizacje.class, defaultView.getBadaniaDao().findByPatient_Id( model.getId())));
 
 
 
