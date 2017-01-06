@@ -102,21 +102,6 @@ public class DefaultView extends VerticalLayout implements View {
         searchPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-                /*Patient patient = new Patient();
-                patient.setImie("Janusz");
-                patient.setNazwisko("Noga");
-                patient.setPesel("61111111111");
-                patient.setDataUr(java.sql.Date.valueOf("2016-09-09"));
-                patient.setCzyUbezp(true);
-                patient.setEmail("noga@wp.pl");
-                patient.setKodPocztowy("05-152");
-                patient.setMiasto("Czosnów");
-                patient.setUlica("Warszawska");
-                patient.setNrDomu("34");
-                patient.setNrTel("512345678");
-                patient.setPlec("K");
-                patientDao = (PatientDao)context.getBean("patientDao");
-                patientDao.save(patient);*/
                 ui.addWindow(subWindow);
 
                 subWindow.setClickController(patientController);
@@ -206,6 +191,22 @@ public class DefaultView extends VerticalLayout implements View {
             deleteFromTable(tabelaBadan, buttonListBadanie);});
         usunZabieg.addClickListener(e->{
             deleteFromTable(tabelaZabiegow, buttonListZabieg);
+        });
+        edytujBadanie.addClickListener(e->{
+            Object selected = ((Grid.SingleSelectionModel)
+                    tabelaBadan.getSelectionModel()).getSelectedRow();
+            if (selected != null) {
+                ui.addWindow(subWindowAddTest);
+                subWindowAddTest.setClickController(testController);
+                testController.fillComboBox();
+                Realizacje realizacje = new Realizacje();
+                realizacje.setId(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()));
+                realizacje.setData(java.sql.Date.valueOf(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("data").toString()));
+                realizacje.setWynik(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString());
+                realizacje.setUwagi(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("uwagi").toString());
+                testController.fillWindow(realizacje, tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+            }
+
         });
 
     }

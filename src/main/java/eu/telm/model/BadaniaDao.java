@@ -14,5 +14,6 @@ public interface BadaniaDao{
     List<Realizacje> findByPatient_Id(Long id);
     List<Realizacje> findByDate(Date date);
     public void delete(Long id);
+    public void update(Realizacje realizacje);
 
 }

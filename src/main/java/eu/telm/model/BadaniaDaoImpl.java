@@ -7,6 +7,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -58,6 +59,22 @@ public class BadaniaDaoImpl implements BadaniaDao {
         session.close();
         System.out.println("Successfully deleted " + realizacje.toString());
     }
+
+    @Override
+    public void update(Realizacje realizacje) {
+            Session session = this.sessionFactory.openSession();
+            session.beginTransaction();
+            Realizacje realizacje1 = (Realizacje) session.load(Realizacje.class, realizacje.getId());
+            realizacje1.setWynik(realizacje.getWynik());
+            realizacje1.setUwagi(realizacje.getUwagi());
+            realizacje1.setData(realizacje.getData());
+            realizacje1.setOperacja(realizacje.getOperacja());
+            session.getTransaction().commit();
+            session.close();
+            System.out.println("Successfully updated " + realizacje.toString());
+
+    }
+
 
     public Realizacje findByID(Long id) {
         Session session = this.sessionFactory.openSession();

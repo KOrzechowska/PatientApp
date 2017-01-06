@@ -9,5 +9,7 @@ import java.util.List;
  */
 public interface OperacjeDao {
     public List<Operacja> getAll();
+    public List<String> getOperacjeByTyp(Operacja.typ typ);
+    public Operacja getByName(String nazwa);
 
 }
