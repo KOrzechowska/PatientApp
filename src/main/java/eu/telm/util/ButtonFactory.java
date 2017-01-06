@@ -22,4 +22,13 @@ public class ButtonFactory {
         button.addStyleName(styleName);
         return button;
     }
+
+    public static void setEnabledButtons(List<Component> buttons, int nrOfFirstButtons, boolean isVisible){
+        int i = 0;
+        for(Component button : buttons) {
+            if(i<nrOfFirstButtons)
+            button.setEnabled(isVisible);
+            i++;
+        }
+    }
 }

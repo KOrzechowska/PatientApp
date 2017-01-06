@@ -13,15 +13,19 @@ public class Operacja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "operacja_id", unique = true, nullable = false)
     private Long id;
+    @Column
     @NotNull
     private String nazwa;
+    @Column
     private String opis;
     public enum typ{BADANIE, ZABIEG};
+    @Column
     @Enumerated(EnumType.STRING)
     private typ typ;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "operacja")
     private List<Realizacje> realizacjeList;
 
     public Long getId() {
@@ -62,5 +66,10 @@ public class Operacja {
 
     public void setTyp(Operacja.typ typ) {
         this.typ = typ;
+    }
+
+    @Override
+    public String toString() {
+        return "OPERACJA\t"+nazwa+"\t"+opis+"\t"+typ;
     }
 }

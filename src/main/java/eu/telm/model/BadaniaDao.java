@@ -7,8 +7,9 @@ import java.util.List;
 /**
  * Created by kasia on 13.11.16.
  */
-public interface BadaniaDao extends JpaRepository<Realizacje, Long> {
+public interface BadaniaDao{
 
     List<Realizacje> findByPatient_Id(Long id);
+    public void delete(Long id);
 
 }

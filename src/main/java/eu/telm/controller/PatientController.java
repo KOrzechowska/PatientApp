@@ -3,6 +3,7 @@ package eu.telm.controller;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
+import eu.telm.model.BadaniaDao;
 import eu.telm.model.Realizacje;
 import eu.telm.model.Patient;
 import eu.telm.view.DefaultView;
@@ -59,10 +60,18 @@ public class PatientController implements Button.ClickListener{
             defaultView.getDateField().setValue(model.getDataUr());
             defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
             //System.out.println(model.getId());
-            List<Realizacje> realizacjeList = defaultView.getBadaniaDao().findByPatient_Id( model.getId());
-            defaultView.getTabelaBadan().setContainerDataSource(
-                    new BeanItemContainer(Realizacje.class, defaultView.getBadaniaDao().findByPatient_Id( model.getId())));
-
+            BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+            List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(model.getId());
+            List<Object[]> realizacjeTable = new ArrayList<>();
+            for(Realizacje realizacje : realizacjeList){
+                realizacjeTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
+                        realizacje.getData().toString(), realizacje.getWynik(), realizacje.getUwagi(),realizacje.getId()});
+            }
+            defaultView.getTabelaBadan().getContainerDataSource().removeAllItems();
+            defaultView.getTabelaBadan().addColumn("id");
+            for(Object[] objects : realizacjeTable)
+                defaultView.getTabelaBadan().addRow(objects);
+            defaultView.getTabelaBadan().removeColumn("id");
 
 
         }

@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Created by kasia on 12.11.16.
  */
-public interface PatientDao extends JpaRepository<Patient, Integer> {
+public interface PatientDao {
     List<Patient> findByNazwisko(String nazwisko);
     List<Patient> findByNazwiskoStartsWithIgnoreCase(String nazwisko);
 
-
-
+    public List<Patient> getAll();
+    public Long save(Patient p);
 }
