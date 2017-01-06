@@ -2,6 +2,10 @@ package eu.telm.util;
 
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,5 +47,14 @@ public class RowFactory {
             i++;
         }
         return  horizontalLayouts;
+    }
+
+    public static VerticalLayout createVerticalRowLayout(List<Component> components){
+        VerticalLayout verticalLayout = new VerticalLayout();
+        for(Component component : components) {
+            verticalLayout.addComponent(component);
+            verticalLayout.setComponentAlignment(component, Alignment.BOTTOM_CENTER);
+        }
+        return verticalLayout;
     }
 }

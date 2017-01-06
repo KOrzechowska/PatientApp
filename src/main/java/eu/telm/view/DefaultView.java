@@ -9,6 +9,7 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.*;
 import eu.telm.controller.PatientController;
+import eu.telm.controller.TestController;
 import eu.telm.model.*;
 import eu.telm.util.ButtonFactory;
 import eu.telm.util.DialogWindow;
@@ -38,8 +39,10 @@ public class DefaultView extends VerticalLayout implements View {
     private Button editPatientButton;
     private UI ui;
     private SearchPatientSubWindow subWindow;
+    private AddTestSubWindow subWindowAddTest;
     private Patient patient;
     private PatientController patientController;
+    private TestController testController;
     private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11, tf12;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
@@ -55,7 +58,12 @@ public class DefaultView extends VerticalLayout implements View {
         subWindow.setWidth("80%");
         subWindow.setHeight("80%");
         subWindow.center();
-         patientController = new PatientController(subWindow,patient, this );
+        patientController = new PatientController(subWindow,patient, this );
+        subWindowAddTest = new AddTestSubWindow();
+        subWindowAddTest.setWidth("80%");
+        subWindowAddTest.setHeight("80%");
+        subWindowAddTest.center();
+        testController = new TestController(subWindowAddTest, patient,this);
     }
     @PostConstruct
     void init() {
@@ -94,7 +102,21 @@ public class DefaultView extends VerticalLayout implements View {
         searchPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
+                /*Patient patient = new Patient();
+                patient.setImie("Janusz");
+                patient.setNazwisko("Noga");
+                patient.setPesel("61111111111");
+                patient.setDataUr(java.sql.Date.valueOf("2016-09-09"));
+                patient.setCzyUbezp(true);
+                patient.setEmail("noga@wp.pl");
+                patient.setKodPocztowy("05-152");
+                patient.setMiasto("Czosnów");
+                patient.setUlica("Warszawska");
+                patient.setNrDomu("34");
+                patient.setNrTel("512345678");
+                patient.setPlec("K");
+                patientDao = (PatientDao)context.getBean("patientDao");
+                patientDao.save(patient);*/
                 ui.addWindow(subWindow);
 
                 subWindow.setClickController(patientController);
@@ -137,6 +159,15 @@ public class DefaultView extends VerticalLayout implements View {
         Button dodajBadanie = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, buttonListBadanie, "addButton");
         ButtonFactory.setEnabledButtons(buttonListBadanie, 3, false);
         form.addComponent(RowFactory.createRowLayout(buttonListBadanie, "rowOfButtons"));
+
+        dodajBadanie.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                ui.addWindow(subWindowAddTest);
+                subWindowAddTest.setClickController(testController);
+
+            }
+        });
 
         Panel zabiegPanel = new Panel("Zabiegi");
         zabiegPanel.setIcon(FontAwesome.HEARTBEAT);

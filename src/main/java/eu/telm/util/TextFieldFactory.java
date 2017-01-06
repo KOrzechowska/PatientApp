@@ -4,6 +4,7 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.ComboBox;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -39,5 +40,13 @@ public class TextFieldFactory {
         isInsured.setEnabled(enabled);
         components.add(isInsured);
         return isInsured;
+    }
+
+    public static ComboBox createComboBox(String label, boolean enabled, List<Component> components){
+        ComboBox comboBox = new ComboBox(label);
+        comboBox.setEnabled(enabled);
+        comboBox.setStyleName("myTextField");
+        components.add(comboBox);
+        return comboBox;
     }
 }
