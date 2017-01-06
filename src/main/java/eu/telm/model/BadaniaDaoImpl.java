@@ -48,6 +48,16 @@ public class BadaniaDaoImpl implements BadaniaDao {
         return realizacjes;
     }
 
+    @Override
+    public Realizacje findById(Long id) {
+        Session session = this.sessionFactory.openSession();
+        Realizacje realizacje = (Realizacje) session.load(Realizacje.class, id);
+        System.out.println("FindByID Realizacje\t"+realizacje.getData()+"\t"+realizacje.getPatient().getImie()+"\t"+realizacje.getOperacja().getNazwa()
+                +"\t"+realizacje.getOperacja().getOpis()+"\t"+realizacje.getPatient().getNazwisko());
+        session.close();
+        return realizacje;
+    }
+
 
     @Override
     public void delete(Long id) {

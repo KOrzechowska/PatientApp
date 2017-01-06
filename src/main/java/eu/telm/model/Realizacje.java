@@ -2,7 +2,7 @@ package eu.telm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * Created by kasia on 13.11.16.

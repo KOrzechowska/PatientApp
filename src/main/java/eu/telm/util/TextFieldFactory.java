@@ -9,6 +9,7 @@ import com.vaadin.ui.ComboBox;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by kasia on 29.12.16.
@@ -25,7 +26,7 @@ public class TextFieldFactory {
 
     public static DateField createDateField(String label, boolean enabled, List<Component> components){
         DateField dateField = new DateField(label);
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
         java.util.Date date = new java.util.Date();
         dateField.setValue(date);
         dateField.setStyleName("myTextField");

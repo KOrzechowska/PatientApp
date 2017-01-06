@@ -196,15 +196,21 @@ public class DefaultView extends VerticalLayout implements View {
             Object selected = ((Grid.SingleSelectionModel)
                     tabelaBadan.getSelectionModel()).getSelectedRow();
             if (selected != null) {
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 ui.addWindow(subWindowAddTest);
                 subWindowAddTest.setClickController(testController);
                 testController.fillComboBox();
+                testController.setTabela(tabelaBadan);
                 Realizacje realizacje = new Realizacje();
                 realizacje.setId(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()));
-                realizacje.setData(java.sql.Date.valueOf(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("data").toString()));
+                try {
+                    realizacje.setData(formatter.parse(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("data").toString()));
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
                 realizacje.setWynik(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString());
                 realizacje.setUwagi(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("uwagi").toString());
-                testController.fillWindow(realizacje, tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                testController.fillWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
             }
 
         });
@@ -212,6 +218,7 @@ public class DefaultView extends VerticalLayout implements View {
     }
 
     public void fillTables(Grid tabelaBadan, Grid tabelaZabiegow, BadaniaDao badaniaDao, long id){
+        DateFormat writeFormat = new SimpleDateFormat( "yyyy-MM-dd");
         badaniaDao = (BadaniaDao) context.getBean("badaniaDao");
         List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(id);
         List<Object[]> realizacjeTable = new ArrayList<>();
@@ -219,10 +226,10 @@ public class DefaultView extends VerticalLayout implements View {
         for(Realizacje realizacje : realizacjeList){
             if(realizacje.getOperacja().getTyp()== Operacja.typ.BADANIE)
                 realizacjeTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
-                        realizacje.getData().toString(), realizacje.getWynik(), realizacje.getUwagi(),realizacje.getId()});
+                        writeFormat.format(realizacje.getData()), realizacje.getWynik(), realizacje.getUwagi(),realizacje.getId()});
             if(realizacje.getOperacja().getTyp()== Operacja.typ.ZABIEG)
                 zabiegiTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
-                        realizacje.getData().toString(), realizacje.getWynik(), realizacje.getUwagi(), realizacje.getId()});
+                        writeFormat.format(realizacje.getData()), realizacje.getWynik(), realizacje.getUwagi(), realizacje.getId()});
         }
         //tabelaBadan.getContainerDataSource().removeAllItems();
         //tabelaZabiegow.getContainerDataSource().removeAllItems();
@@ -239,6 +246,8 @@ public class DefaultView extends VerticalLayout implements View {
         //tabelaZabiegow.removeColumn("id");
     }
 
+
+
     public void deleteFromTable(Grid tabela, List<Component> buttonsUnderTabel){
         Object selected = ((Grid.SingleSelectionModel)
                 tabela.getSelectionModel()).getSelectedRow();
@@ -247,7 +256,7 @@ public class DefaultView extends VerticalLayout implements View {
             Date data = new Date();
             Date dataBadania = null;
             try {
-                dataBadania = dateFormat.parse(tabela.getContainerDataSource().getItem(selected)
+                dataBadania = (Date) dateFormat.parse(tabela.getContainerDataSource().getItem(selected)
                         .getItemProperty("data").toString());
             } catch (ParseException e1) {
                 e1.printStackTrace();
