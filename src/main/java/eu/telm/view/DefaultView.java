@@ -101,19 +101,7 @@ public class DefaultView extends VerticalLayout implements View {
 
             }
         });
-        editPatientButton.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent clickEvent) {
-                patientDao = (PatientDao)context.getBean("patientDao");
-                Patient patient = new Patient();
-                patient.setImie("Janina");
-                patient.setNazwisko("Muszka");
-                patient.setPesel("93081406767");
-               // patientDao.save(patient);
-                patientDao.getAll();
-
-            }
-        });
+        
         Panel badaniaPanel = new Panel("Badania");
         badaniaPanel.setIcon(FontAwesome.STETHOSCOPE);
         badaniaPanel.setSizeFull();
