@@ -92,6 +92,8 @@ public class TestController implements Button.ClickListener {
     public void fillWindow(Long id, String nazwa){
         this.realizacje = badaniaDao.findById(id);
         editting = true;
+        subWindowAddTest.getResultTextField().setEnabled(true);
+        subWindowAddTest.getCommentsTextField().setEnabled(true);
         if(realizacje.getWynik() !=null)
         subWindowAddTest.getResultTextField().setValue(realizacje.getWynik());
         if(realizacje.getUwagi() !=null)

@@ -33,9 +33,9 @@ public class AddTestSubWindow extends Window {
         List<Component> textFields = new ArrayList<>();
         nameComboBox = TextFieldFactory.createComboBox("Nazwa", true, textFields);
         dateField = TextFieldFactory.createDateField("Data", true, textFields);
-        resultTextField = TextFieldFactory.createTextField("Wynik", true, textFields);
+        resultTextField = TextFieldFactory.createTextField("Wynik", false, textFields);
         resultTextField.setHeight("60");
-        commentsTextField = TextFieldFactory.createTextField("Uwagi", true, textFields);
+        commentsTextField = TextFieldFactory.createTextField("Uwagi", false, textFields);
         commentsTextField.setHeight("60");
         addTestButton = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, "addButton");
         setContent(mainLayout);
