@@ -61,6 +61,7 @@ public class PatientController implements Button.ClickListener{
             defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
             //System.out.println(model.getId());
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+            /*
             List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(model.getId());
             List<Object[]> realizacjeTable = new ArrayList<>();
             for(Realizacje realizacje : realizacjeList){
@@ -72,7 +73,8 @@ public class PatientController implements Button.ClickListener{
             for(Object[] objects : realizacjeTable)
                 defaultView.getTabelaBadan().addRow(objects);
             defaultView.getTabelaBadan().removeColumn("id");
-
+*/
+            defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
 
         }
     }
