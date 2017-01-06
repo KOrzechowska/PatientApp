@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -31,6 +32,21 @@ public class BadaniaDaoImpl implements BadaniaDao {
         session.close();
         return realizacjes;
     }
+
+    @Override
+    public List<Realizacje> findByDate(java.util.Date date) {
+        Session session = this.sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(Realizacje.class);
+        criteria = criteria.add(Restrictions.eq("data", date));
+        List<Realizacje> realizacjes = criteria.list();
+        System.out.println("wynik\t"+realizacjes.size());
+        for(Realizacje realizacje : realizacjes)
+            System.out.println("wynik\t"+realizacje.getData()+"\t"+realizacje.getPatient().getImie()+"\t"+realizacje.getOperacja().getNazwa()
+            +"\t"+realizacje.getOperacja().getOpis()+"\t"+realizacje.getPatient().getNazwisko());
+        session.close();
+        return realizacjes;
+    }
+
 
     @Override
     public void delete(Long id) {

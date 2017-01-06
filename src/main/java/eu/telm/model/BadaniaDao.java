@@ -2,6 +2,8 @@ package eu.telm.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,6 +12,7 @@ import java.util.List;
 public interface BadaniaDao{
 
     List<Realizacje> findByPatient_Id(Long id);
+    List<Realizacje> findByDate(Date date);
     public void delete(Long id);
 
 }

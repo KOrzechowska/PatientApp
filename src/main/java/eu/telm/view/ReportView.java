@@ -8,15 +8,15 @@ import com.vaadin.spring.annotation.SpringView;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
-import eu.telm.dataBase.DBOperation;
-import eu.telm.models.Pacjent;
+import eu.telm.model.BadaniaDao;
+import eu.telm.model.Realizacje;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javax.annotation.PostConstruct;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -25,6 +25,7 @@ import java.util.List;
  */
 @SpringView(name = ReportView.VIEW_NAME)
 public class ReportView extends VerticalLayout implements View {
+    public static final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
     public static final String VIEW_NAME = "reportView";
     private Grid tabelaBadan;
 
@@ -38,7 +39,7 @@ public class ReportView extends VerticalLayout implements View {
         Label subtitleLabel = new Label(subTitle);
 
         tabelaBadan = new Grid();
-        tabelaBadan.setColumns("imie", "nazwisko", "badanie", "zabieg");
+        tabelaBadan.setColumns("imie", "nazwisko", "nazwa", "opis");
         tabelaBadan.setSizeFull();
         tabelaBadan.setHeight(300, Unit.PIXELS);
         try {
@@ -58,17 +59,17 @@ public class ReportView extends VerticalLayout implements View {
         IndexedContainer container = new IndexedContainer();
         container.addContainerProperty("imie", String.class, "");
         container.addContainerProperty("nazwisko", String.class, "");
-        container.addContainerProperty("badanie", String.class, "");
-        container.addContainerProperty("zabieg", String.class, "");
+        container.addContainerProperty("nazwa", String.class, "");
+        container.addContainerProperty("opis", String.class, "");
 
-        DBOperation dbOperation = new DBOperation();
-        List<Pacjent> lista = dbOperation.getDailyReport("2016-09-09");
-        for (Pacjent pacjent : lista){
+        BadaniaDao badaniaDao = (BadaniaDao)context.getBean("badaniaDao");
+        List<Realizacje> lista = badaniaDao.findByDate(new java.util.Date());
+        for (Realizacje realizacje : lista){
             Item newItem = container.getItem(container.addItem());
-            newItem.getItemProperty("imie").setValue(pacjent.getImie());
-            newItem.getItemProperty("nazwisko").setValue(pacjent.getNazwisko());
-            newItem.getItemProperty("badanie").setValue(pacjent.getRealizacjaBadaniaList().get(0).getOperacja().getNazwa());
-            newItem.getItemProperty("zabieg").setValue(pacjent.getRealizacjaBadaniaList().get(0).getOperacja().getOpis());
+            newItem.getItemProperty("imie").setValue(realizacje.getPatient().getImie());
+            newItem.getItemProperty("nazwisko").setValue(realizacje.getPatient().getNazwisko());
+            newItem.getItemProperty("nazwa").setValue(realizacje.getOperacja().getNazwa());
+            newItem.getItemProperty("opis").setValue(realizacje.getOperacja().getOpis());
         }
         tabelaBadan.setContainerDataSource(container);
     }
