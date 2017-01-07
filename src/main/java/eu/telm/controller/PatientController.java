@@ -8,7 +8,10 @@ import eu.telm.model.Realizacje;
 import eu.telm.model.Patient;
 import eu.telm.view.DefaultView;
 import eu.telm.view.SearchPatientSubWindow;
+import eu.telm.view.EditPatientSubWindow;
 
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,11 +22,17 @@ public class PatientController implements Button.ClickListener{
     private SearchPatientSubWindow subWindow;
     private DefaultView defaultView;
     private Patient model;
+    //
+    private EditPatientSubWindow editWindow;
+    //
 
-    public PatientController(SearchPatientSubWindow subWindow, Patient model , DefaultView defaultView){
+    public PatientController(SearchPatientSubWindow subWindow, EditPatientSubWindow editWindow, Patient model , DefaultView defaultView){
         this. subWindow = subWindow;
         this.defaultView = defaultView;
         this. model = model;
+        //
+        this.editWindow = editWindow;
+        //
     }
 
     public void updatePatient(){
@@ -42,7 +51,42 @@ public class PatientController implements Button.ClickListener{
         model.setKodPocztowy(subWindow.getSelectedPatient().getKodPocztowy());
         //System.out.println(model.getImie());
     }
-
+    public void Zapisz() {
+        model.setImie(defaultView.getTextFieldImie().getValue());
+    }
+    public String Imie() {
+        return model.getImie();
+    }
+    public String Nazwisko() {
+        return model.getNazwisko();
+    }
+    public String Pesel() {
+        return model.getPesel();
+    }
+    public String Email() {
+        return model.getEmail();
+    }
+    public String Plec() {
+        return model.getPlec();
+    }
+    public String Ulica() {
+        return model.getUlica();
+    }
+    public String Numer() {
+        return model.getNrDomu();
+    }
+    public String Miasto() {
+        return model.getMiasto();
+    }
+    public String Kod() {
+        return model.getKodPocztowy();
+    }
+    public String Tel() {
+        return model.getNrTel();
+    }
+    public Date Data() {
+        return model.getDataUr();
+    }
 
     @Override
     public void buttonClick(Button.ClickEvent clickEvent) {
