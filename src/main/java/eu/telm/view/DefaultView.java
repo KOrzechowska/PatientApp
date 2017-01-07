@@ -46,7 +46,9 @@ public class DefaultView extends VerticalLayout implements View {
     private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11, tf12;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
-
+    //
+    private EditPatientSubWindow editWindow;
+    //
     @Autowired
     public DefaultView(OperacjeDao operacjeDao, BadaniaDao badaniaDao, UI ui){
         this.patientDao =  (PatientDao)context.getBean("patientDao");
@@ -58,12 +60,18 @@ public class DefaultView extends VerticalLayout implements View {
         subWindow.setWidth("80%");
         subWindow.setHeight("80%");
         subWindow.center();
-        patientController = new PatientController(subWindow,patient, this );
+        patientController = new PatientController(subWindow, editWindow, patient, this );
         subWindowAddTest = new AddTestSubWindow();
         subWindowAddTest.setWidth("80%");
         subWindowAddTest.setHeight("80%");
         subWindowAddTest.center();
         testController = new TestController(subWindowAddTest, patient,this);
+        //
+        editWindow = new EditPatientSubWindow(patient);
+        editWindow.setWidth("80%");
+        editWindow.setHeight("80%");
+        editWindow.center();
+        //
     }
     @PostConstruct
     void init() {
@@ -92,6 +100,7 @@ public class DefaultView extends VerticalLayout implements View {
         List<Component> buttonsPatientPanel = new ArrayList<>();
         editPatientButton = ButtonFactory.createButton("Edytuj", FontAwesome.EDIT, buttonsPatientPanel, "editButton");
         searchPatientButton = ButtonFactory.createButton("Szukaj", FontAwesome.SEARCH, buttonsPatientPanel, "searchButton");
+        editPatientButton.setVisible(false);
         horizontalLayouts = RowFactory.createRowsLayout(textFields);
         horizontalLayouts.forEach(patientData::addComponent);
         patientData.addComponent(RowFactory.createRowLayout(buttonsPatientPanel, "rowOfButtonsPatientPanel"));
@@ -102,13 +111,68 @@ public class DefaultView extends VerticalLayout implements View {
         searchPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
+
+              /* Patient patient = new Patient();
+                patient.setImie("Kamila");
+                patient.setNazwisko("Wstążka");
+                patient.setPesel("94070301121");
+                patient.setDataUr(java.sql.Date.valueOf("1994-07-03"));
+                patient.setCzyUbezp(true);
+                patient.setEmail("wstazka@wp.pl");
+                patient.setKodPocztowy("05-235");
+                patient.setMiasto("Warszawa");
+                patient.setUlica("Warszawska");
+                patient.setNrDomu("56");
+                patient.setNrTel("789345876");
+                patient.setPlec("K");
+                patientDao = (PatientDao)context.getBean("patientDao");
+                patientDao.save(patient);*/
+
                 ui.addWindow(subWindow);
 
                 subWindow.setClickController(patientController);
-
+                editPatientButton.setVisible(true);
 
             }
         });
+
+        //
+        editPatientButton.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                ui.addWindow(editWindow);
+                editWindow.ustawImie(patientController.Imie());
+                editWindow.ustawNazwisko(patientController.Nazwisko());
+                editWindow.ustawPesel(patientController.Pesel());
+                editWindow.ustawEmail(patientController.Email());
+                editWindow.ustawPlec(patientController.Plec());
+                editWindow.ustawNumer(patientController.Numer());
+                editWindow.ustawMiasto(patientController.Miasto());
+                editWindow.ustawUlice(patientController.Ulica());
+                editWindow.ustawKod(patientController.Kod());
+                editWindow.ustawTelefon(patientController.Tel());
+                editWindow.ustawDateUrodzenia(patientController.Data());
+            }
+        });
+        editWindow.cancel.addClickListener(e -> editWindow.Anuluj());
+        editWindow.save.addClickListener(e -> {
+            editWindow.Save();
+            tf1.setValue(patient.getImie());
+            tf2.setValue(patient.getNazwisko());
+            tf3.setValue(patient.getPesel());
+            //tf4.setData(patient.getDataUr());
+            tf5.setValue(patient.getPlec());
+            tf6.setValue(patient.getUlica());
+            tf7.setValue(patient.getMiasto());
+            tf8.setValue(patient.getNrDomu());
+            tf9.setValue(patient.getKodPocztowy());
+            tf10.setValue(patient.getNrTel());
+            tf11.setValue(patient.getEmail());
+            editWindow.close();
+        });
+        patientController.Zapisz();
+
+        //
 
         Panel badaniaPanel = new Panel("Badania");
         badaniaPanel.setIcon(FontAwesome.STETHOSCOPE);
