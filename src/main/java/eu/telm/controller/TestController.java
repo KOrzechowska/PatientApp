@@ -44,28 +44,9 @@ public class TestController implements Button.ClickListener {
     public void buttonClick(Button.ClickEvent clickEvent) {
         Object source = clickEvent.getSource();
 
-       /* if(source == subWindow.getGetSelectedPatientButton()){
-            updatePatient();
-            subWindow.close();
-            defaultView.getTextFieldImie().setValue(model.getImie());
-            defaultView.getTextFieldNazwisko().setValue(model.getNazwisko());
-            defaultView.getTextFieldPesel().setValue(model.getPesel());
-            defaultView.getTextFieldPlec().setValue(model.getPlec());
-            defaultView.getTextFieldUlica().setValue(model.getUlica());
-            defaultView.getTextFieldMiasto().setValue(model.getMiasto());
-            defaultView.getDateField().setValue(model.getDataUr());
-            defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
-            //System.out.println(model.getId());
-            List<Realizacje> realizacjeList = defaultView.getBadaniaDao().findByPatient_Id( model.getId());
-            defaultView.getTabelaBadan().setContainerDataSource(
-                    new BeanItemContainer(Realizacje.class, defaultView.getBadaniaDao().findByPatient_Id( model.getId())));
-
-
-
-        }*/
         if (editting){
             if(source == subWindowAddTest.getAddTestButton()){
-                DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
                 realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
                 try {
@@ -88,7 +69,7 @@ public class TestController implements Button.ClickListener {
         if (add){
             if(source == subWindowAddTest.getAddTestButton()){
                 Realizacje real = new Realizacje();
-                DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 try {
                     real.setData(formatter.parse(subWindowAddTest.getDateField().getValue().toString()));
                 } catch (ParseException e) {
@@ -130,6 +111,8 @@ public class TestController implements Button.ClickListener {
         subWindowAddTest.getResultTextField().setEnabled(false);
         subWindowAddTest.getCommentsTextField().setEnabled(false);
         subWindowAddTest.getNameComboBox().clear();
+        subWindowAddTest.getResultTextField().clear();
+        subWindowAddTest.getCommentsTextField().clear();
         add = true;
     }
 
