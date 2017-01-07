@@ -132,7 +132,6 @@ public class DefaultView extends VerticalLayout implements View {
             }
         });
 
-        patientController.Zapisz();
 
         //
 

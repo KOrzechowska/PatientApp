@@ -3,16 +3,14 @@ package eu.telm.controller;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.spring.navigator.SpringViewProvider;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import eu.telm.view.AboutView;
-import eu.telm.view.DefaultView;
-import eu.telm.view.DictionaryView;
-import eu.telm.view.ReportView;
+import eu.telm.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Theme("colored")
@@ -45,7 +43,38 @@ public class SiteUI extends UI {
         root.setExpandRatio(viewContainer, 1.0f);
 
         Navigator navigator = new Navigator(this, viewContainer);
+        navigator.addView(SimpleLoginView.NAME, SimpleLoginView.class);
         navigator.addProvider(viewProvider);
+
+        getNavigator().addViewChangeListener(new ViewChangeListener() {
+
+            @Override
+            public boolean beforeViewChange(ViewChangeEvent event) {
+
+                // Check if a user has logged in
+                boolean isLoggedIn = getSession().getAttribute("user") != null;
+                boolean isLoginView = event.getNewView() instanceof SimpleLoginView;
+
+                if (!isLoggedIn && !isLoginView) {
+                    // Redirect to login view always if a user has not yet
+                    // logged in
+                    getNavigator().navigateTo(SimpleLoginView.NAME);
+                    return false;
+
+                } else if (isLoggedIn && isLoginView) {
+                    // If someone tries to access to login view while logged in,
+                    // then cancel
+                    return false;
+                }
+
+                return true;
+            }
+
+            @Override
+            public void afterViewChange(ViewChangeListener.ViewChangeEvent event) {
+
+            }
+        });
     }
 
     private Button createNavigationButton(String caption,FontAwesome fontAwesome, final String viewName) {
