@@ -3,6 +3,7 @@ package eu.telm.controller;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Notification;
 import eu.telm.model.*;
 import eu.telm.view.DefaultView;
 import eu.telm.view.AddTestSubWindow;
@@ -25,9 +26,9 @@ public class TestController implements Button.ClickListener {
     private Patient model;
     private Boolean editting = false;
     private Boolean add=false;
+    private Boolean addResult = false;
     private Realizacje realizacje;
     private Grid tabela;
-
     private BadaniaDao badaniaDao;
     private OperacjeDao operacjeDao;
 
@@ -46,7 +47,8 @@ public class TestController implements Button.ClickListener {
 
         if (editting){
             if(source == subWindowAddTest.getAddTestButton()){
-                DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
+                if(subWindowAddTest.getNameComboBox().isEmpty()||subWindowAddTest.getDateField().isEmpty())
+                    Notification.show("Aby dodać badanie wymagana jest data oraz nazwa badania.");
                 realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
                 realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
                 realizacje.setData(subWindowAddTest.getDateField().getValue());
@@ -58,25 +60,40 @@ public class TestController implements Button.ClickListener {
                 fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
                 subWindowAddTest.close();
                 editting=false;
-
             }
         }
-
         if (add){
             if(source == subWindowAddTest.getAddTestButton()){
                 Realizacje real = new Realizacje();
-                DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-                real.setData(subWindowAddTest.getDateField().getValue());
-                real.setPatient(model);
-                OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
-                Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
-                real.setOperacja(operacja);
-                BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
-                badaniaDao.save(real);
-                fillTable(tabela, badaniaDao, real.getPatient().getId());
-                subWindowAddTest.close();
-                add=false;
+                if(subWindowAddTest.getNameComboBox().isEmpty()||subWindowAddTest.getDateField().isEmpty())
+                    Notification.show("Aby dodać badanie wymagana jest data oraz nazwa badania.");
+                else {
+                    real.setData(subWindowAddTest.getDateField().getValue());
+                    real.setPatient(model);
+                    OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
+                    Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
+                    real.setOperacja(operacja);
+                    BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+                    badaniaDao.save(real);
+                    fillTable(tabela, badaniaDao, real.getPatient().getId());
+                    subWindowAddTest.close();
+                    add=false;
+                }
+            }
+        }
 
+        if(addResult){
+            if(source==subWindowAddTest.getAddTestButton()){
+                if(subWindowAddTest.getResultTextField().isEmpty())
+                    Notification.show("Pole Wynik, nie może być puste.");
+                else {
+                    realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
+                    realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
+                    badaniaDao.update(realizacje);
+                    fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
+                    subWindowAddTest.close();
+                    addResult = false;
+                }
             }
         }
     }
@@ -89,23 +106,47 @@ public class TestController implements Button.ClickListener {
     public void fillWindow(Long id, String nazwa){
         this.realizacje = badaniaDao.findById(id);
         editting = true;
-        subWindowAddTest.getResultTextField().setEnabled(true);
-        subWindowAddTest.getCommentsTextField().setEnabled(true);
-        if(realizacje.getWynik() !=null)
-        subWindowAddTest.getResultTextField().setValue(realizacje.getWynik());
-        if(realizacje.getUwagi() !=null)
-        subWindowAddTest.getCommentsTextField().setValue(realizacje.getUwagi());
+        if(realizacje.getWynik() !=null&& !realizacje.getWynik().isEmpty()) {
+            subWindowAddTest.getResultTextField().setValue(realizacje.getWynik());
+            subWindowAddTest.getResultTextField().setEnabled(true);
+            subWindowAddTest.getCommentsTextField().setValue(realizacje.getUwagi());
+            subWindowAddTest.getCommentsTextField().setEnabled(true);
+        }else {
+            subWindowAddTest.getResultTextField().setEnabled(false);
+            subWindowAddTest.getResultTextField().clear();
+            subWindowAddTest.getCommentsTextField().setEnabled(false);
+            subWindowAddTest.getCommentsTextField().clear();
+        }
+        subWindowAddTest.getDateField().setEnabled(true);
         subWindowAddTest.getDateField().setValue(realizacje.getData());
+        subWindowAddTest.getDateField().setEnabled(true);
+        subWindowAddTest.getNameComboBox().setEnabled(true);
         subWindowAddTest.getNameComboBox().setValue(nazwa);
     }
 
     public void fillAddWindow(){
         subWindowAddTest.getResultTextField().setEnabled(false);
         subWindowAddTest.getCommentsTextField().setEnabled(false);
+        subWindowAddTest.getNameComboBox().setEnabled(true);
+        subWindowAddTest.getDateField().setEnabled(true);
         subWindowAddTest.getNameComboBox().clear();
         subWindowAddTest.getResultTextField().clear();
         subWindowAddTest.getCommentsTextField().clear();
+        subWindowAddTest.getDateField().setValue(new java.util.Date());
         add = true;
+    }
+
+    public void fillAddResultWindow(Long id, String nazwa){
+        this.realizacje = badaniaDao.findById(id);
+        subWindowAddTest.getNameComboBox().setEnabled(false);
+        subWindowAddTest.getNameComboBox().setValue(nazwa);
+        subWindowAddTest.getDateField().setEnabled(false);
+        subWindowAddTest.getDateField().setValue(realizacje.getData());
+        subWindowAddTest.getResultTextField().clear();
+        subWindowAddTest.getCommentsTextField().clear();
+        subWindowAddTest.getResultTextField().setEnabled(true);
+        subWindowAddTest.getCommentsTextField().setEnabled(true);
+        addResult = true;
     }
 
     public void fillTable(Grid tabelaBadan, BadaniaDao badaniaDao, long id){

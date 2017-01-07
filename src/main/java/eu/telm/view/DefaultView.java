@@ -181,6 +181,24 @@ public class DefaultView extends VerticalLayout implements View {
             }
         });
 
+        dodajWynikBadanie.addClickListener(e->{
+            Object selected = ((Grid.SingleSelectionModel)
+                    tabelaBadan.getSelectionModel()).getSelectedRow();
+            if(selected!=null){
+                testController.setTabela(tabelaBadan);
+                if(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString()==null
+                        ||tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString().isEmpty()) {
+                    ui.addWindow(subWindowAddTest);
+                    subWindowAddTest.setClickController(testController);
+                    testController.fillComboBox();
+                    testController.fillAddResultWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                }
+                else
+                    Notification.show("Badanie ma już dodany wynik. Mozna je tylko edytować.");
+
+            }
+        });
+
         Panel zabiegPanel = new Panel("Zabiegi");
         zabiegPanel.setIcon(FontAwesome.HEARTBEAT);
         zabiegPanel.setSizeFull();
