@@ -49,11 +49,7 @@ public class TestController implements Button.ClickListener {
                 DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
                 realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
                 realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
-                try {
-                    realizacje.setData(formatter.parse(subWindowAddTest.getDateField().getValue().toString()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                realizacje.setData(subWindowAddTest.getDateField().getValue());
                 OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
                 Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
                 realizacje.setOperacja(operacja);
@@ -70,11 +66,7 @@ public class TestController implements Button.ClickListener {
             if(source == subWindowAddTest.getAddTestButton()){
                 Realizacje real = new Realizacje();
                 DateFormat formatter = new SimpleDateFormat("yyyy-mm-dd");
-                try {
-                    real.setData(formatter.parse(subWindowAddTest.getDateField().getValue().toString()));
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                real.setData(subWindowAddTest.getDateField().getValue());
                 real.setPatient(model);
                 OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
                 Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
