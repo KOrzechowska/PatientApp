@@ -330,8 +330,10 @@ public class DefaultView extends VerticalLayout implements View {
                 e1.printStackTrace();
             }
             // sprawdzenie czy badanie ma wynik i czy jest odpowiednia data
-            if(tabela.getContainerDataSource().getItem(selected)
-                    .getItemProperty("wynik").getValue()==null && dataBadania.compareTo(data)>-1) {
+            if((tabela.getContainerDataSource().getItem(selected)
+                    .getItemProperty("wynik").getValue()==null ||
+                    tabela.getContainerDataSource().getItem(selected)
+                            .getItemProperty("wynik").getValue().equals(""))&& dataBadania.compareTo(data)>-1) {
                 DialogWindow dialogWindow = new DialogWindow("Potwierdź", FontAwesome.INFO, "Potwierdź swoją decyzję o usunięciu " +
                         "rekordu, proszę", "Usuń", FontAwesome.TRASH, "Wróć", FontAwesome.BACKWARD);
                 ui.addWindow(dialogWindow);
@@ -351,7 +353,8 @@ public class DefaultView extends VerticalLayout implements View {
                 });
 
             }else{
-                Notification.show("Nie usuwamy badań, które już wykonano\t");
+                Notification.show("Nie usuwamy badań, które już wykonano\t"+"dfs"+tabela.getContainerDataSource().getItem(selected)
+                        .getItemProperty("wynik").getValue()+"dsd");
             }
         }
     }
