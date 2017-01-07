@@ -4,6 +4,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
 import eu.telm.model.BadaniaDao;
+import eu.telm.model.PatientDao;
 import eu.telm.model.Realizacje;
 import eu.telm.model.Patient;
 import eu.telm.view.DefaultView;
@@ -22,9 +23,7 @@ public class PatientController implements Button.ClickListener{
     private SearchPatientSubWindow subWindow;
     private DefaultView defaultView;
     private Patient model;
-    //
     private EditPatientSubWindow editWindow;
-    //
 
     public PatientController(SearchPatientSubWindow subWindow, EditPatientSubWindow editWindow, Patient model , DefaultView defaultView){
         this. subWindow = subWindow;
@@ -51,41 +50,53 @@ public class PatientController implements Button.ClickListener{
         model.setKodPocztowy(subWindow.getSelectedPatient().getKodPocztowy());
         //System.out.println(model.getImie());
     }
+
+    /**
+     * funkcja aktualizująca pacjenta wartościami
+     * pól z okna edytowania
+     */
+    public void updateEdittedPatient(){
+
+        System.out.println(model.getId());
+        model.setImie(editWindow.getImie().getValue());
+        model.setNazwisko(editWindow.getNazwisko().getValue());
+        model.setPesel(editWindow.getPesel().getValue());
+        model.setPlec(editWindow.getPlec().getValue());
+        model.setEmail(editWindow.getEmail().getValue());
+        model.setNrTel(editWindow.getTel().getValue());
+        model.setDataUr((java.sql.Date)(editWindow.getBirthDate().getValue()));
+        model.setUlica(editWindow.getUlica().getValue());
+        model.setMiasto(editWindow.getMiasto().getValue());
+        model.setNrDomu(editWindow.getNumer().getValue());
+        model.setKodPocztowy(editWindow.getKod().getValue());
+
+    }
+
+    public void fillEditWindow(){
+        System.out.println("KONTROLER\t"+model.getImie());
+        editWindow.ustawImie(model.getImie());
+        editWindow.ustawNazwisko(model.getNazwisko());
+        editWindow.ustawPesel(model.getPesel());
+        editWindow.ustawEmail(model.getEmail());
+        editWindow.ustawPlec(model.getPlec());
+        editWindow.ustawNumer(model.getNrDomu());
+        editWindow.ustawMiasto(model.getMiasto());
+        editWindow.ustawUlice(model.getUlica());
+        editWindow.ustawKod(model.getKodPocztowy());
+        editWindow.ustawTelefon(model.getNrTel());
+        editWindow.ustawDateUrodzenia(model.getDataUr());
+    }
+
+    /**
+     * funkacja uzupełniająca pola na głównej stronie
+     * danymi pacjenta po ich edycji
+     */
+    public void fillMainWindow(){
+        defaultView.fillPatientPanel(model);
+
+    }
     public void Zapisz() {
         model.setImie(defaultView.getTextFieldImie().getValue());
-    }
-    public String Imie() {
-        return model.getImie();
-    }
-    public String Nazwisko() {
-        return model.getNazwisko();
-    }
-    public String Pesel() {
-        return model.getPesel();
-    }
-    public String Email() {
-        return model.getEmail();
-    }
-    public String Plec() {
-        return model.getPlec();
-    }
-    public String Ulica() {
-        return model.getUlica();
-    }
-    public String Numer() {
-        return model.getNrDomu();
-    }
-    public String Miasto() {
-        return model.getMiasto();
-    }
-    public String Kod() {
-        return model.getKodPocztowy();
-    }
-    public String Tel() {
-        return model.getNrTel();
-    }
-    public Date Data() {
-        return model.getDataUr();
     }
 
     @Override
@@ -106,21 +117,23 @@ public class PatientController implements Button.ClickListener{
             //System.out.println(model.getId());
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
-            /*
-            List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(model.getId());
-            List<Object[]> realizacjeTable = new ArrayList<>();
-            for(Realizacje realizacje : realizacjeList){
-                realizacjeTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
-                        realizacje.getData().toString(), realizacje.getWynik(), realizacje.getUwagi(),realizacje.getId()});
-            }
-            defaultView.getTabelaBadan().getContainerDataSource().removeAllItems();
-            defaultView.getTabelaBadan().addColumn("id");
-            for(Object[] objects : realizacjeTable)
-                defaultView.getTabelaBadan().addRow(objects);
-            defaultView.getTabelaBadan().removeColumn("id");
-*/
             defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
 
         }
+
+        if (source == editWindow.getCancel()){
+            editWindow.close();
+        }
+        if (source == editWindow.getSave()){
+            updateEdittedPatient();
+            fillMainWindow();
+            PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
+            patientDao.update(model);
+            editWindow.close();
+        }
+    }
+
+    public void setModel(Patient model) {
+        this.model = model;
     }
 }

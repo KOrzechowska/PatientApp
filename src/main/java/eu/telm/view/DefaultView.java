@@ -61,6 +61,7 @@ public class DefaultView extends VerticalLayout implements View {
         subWindow.setWidth("80%");
         subWindow.setHeight("80%");
         subWindow.center();
+        editWindow = new EditPatientSubWindow(patient);
         patientController = new PatientController(subWindow, editWindow, patient, this );
         subWindowAddTest = new AddTestSubWindow();
         subWindowAddTest.setWidth("80%");
@@ -68,7 +69,7 @@ public class DefaultView extends VerticalLayout implements View {
         subWindowAddTest.center();
         testController = new TestController(subWindowAddTest, patient,this);
         //
-        editWindow = new EditPatientSubWindow(patient);
+
         editWindow.setWidth("80%");
         editWindow.setHeight("80%");
         editWindow.center();
@@ -101,7 +102,7 @@ public class DefaultView extends VerticalLayout implements View {
         List<Component> buttonsPatientPanel = new ArrayList<>();
         editPatientButton = ButtonFactory.createButton("Edytuj", FontAwesome.EDIT, buttonsPatientPanel, "editButton");
         searchPatientButton = ButtonFactory.createButton("Szukaj", FontAwesome.SEARCH, buttonsPatientPanel, "searchButton");
-        editPatientButton.setVisible(false);
+        editPatientButton.setEnabled(false);
         horizontalLayouts = RowFactory.createRowsLayout(textFields);
         horizontalLayouts.forEach(patientData::addComponent);
         patientData.addComponent(RowFactory.createRowLayout(buttonsPatientPanel, "rowOfButtonsPatientPanel"));
@@ -112,27 +113,10 @@ public class DefaultView extends VerticalLayout implements View {
         searchPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
-
-              /* Patient patient = new Patient();
-                patient.setImie("Kamila");
-                patient.setNazwisko("Wstążka");
-                patient.setPesel("94070301121");
-                patient.setDataUr(java.sql.Date.valueOf("1994-07-03"));
-                patient.setCzyUbezp(true);
-                patient.setEmail("wstazka@wp.pl");
-                patient.setKodPocztowy("05-235");
-                patient.setMiasto("Warszawa");
-                patient.setUlica("Warszawska");
-                patient.setNrDomu("56");
-                patient.setNrTel("789345876");
-                patient.setPlec("K");
-                patientDao = (PatientDao)context.getBean("patientDao");
-                patientDao.save(patient);*/
-
                 ui.addWindow(subWindow);
 
                 subWindow.setClickController(patientController);
-                editPatientButton.setVisible(true);
+                editPatientButton.setEnabled(true);
 
             }
         });
@@ -142,35 +126,12 @@ public class DefaultView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(editWindow);
-                editWindow.ustawImie(patientController.Imie());
-                editWindow.ustawNazwisko(patientController.Nazwisko());
-                editWindow.ustawPesel(patientController.Pesel());
-                editWindow.ustawEmail(patientController.Email());
-                editWindow.ustawPlec(patientController.Plec());
-                editWindow.ustawNumer(patientController.Numer());
-                editWindow.ustawMiasto(patientController.Miasto());
-                editWindow.ustawUlice(patientController.Ulica());
-                editWindow.ustawKod(patientController.Kod());
-                editWindow.ustawTelefon(patientController.Tel());
-                editWindow.ustawDateUrodzenia(patientController.Data());
+                editWindow.setClickController(patientController);
+                patientController.setModel(patient);
+                patientController.fillEditWindow();
             }
         });
-        editWindow.cancel.addClickListener(e -> editWindow.Anuluj());
-        editWindow.save.addClickListener(e -> {
-            editWindow.Save();
-            tf1.setValue(patient.getImie());
-            tf2.setValue(patient.getNazwisko());
-            tf3.setValue(patient.getPesel());
-            //tf4.setData(patient.getDataUr());
-            tf5.setValue(patient.getPlec());
-            tf6.setValue(patient.getUlica());
-            tf7.setValue(patient.getMiasto());
-            tf8.setValue(patient.getNrDomu());
-            tf9.setValue(patient.getKodPocztowy());
-            tf10.setValue(patient.getNrTel());
-            tf11.setValue(patient.getEmail());
-            editWindow.close();
-        });
+
         patientController.Zapisz();
 
         //
@@ -366,6 +327,20 @@ public class DefaultView extends VerticalLayout implements View {
             System.out.println("zaznaczył");
             ButtonFactory.setEnabledButtons(buttonsUnderTable, 3, true);
         }
+    }
+
+    public void fillPatientPanel(Patient model){
+        tf1.setValue(model.getImie());
+        tf2.setValue(model.getNazwisko());
+        tf3.setValue(model.getPesel());
+        dateField.setData(patient.getDataUr());
+        tf5.setValue(model.getPlec());
+        tf6.setValue(model.getUlica());
+        tf7.setValue(model.getMiasto());
+        tf8.setValue(model.getNrDomu());
+        tf9.setValue(model.getKodPocztowy());
+        tf10.setValue(model.getNrTel());
+        tf11.setValue(model.getEmail());
     }
 
     public DateField getDateField() {

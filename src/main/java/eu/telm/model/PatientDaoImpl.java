@@ -65,6 +65,28 @@ public class PatientDaoImpl implements PatientDao {
         return e.getId();
     }
 
+    @Override
+    public void update(Patient p) {
+        Session session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        Patient patient = (Patient) session.load(Patient.class, p.getId());
+        patient.setImie(p.getImie());
+        patient.setNazwisko(p.getNazwisko());
+        patient.setDataUr(p.getDataUr());
+        patient.setPesel(p.getPesel());
+        patient.setPlec(p.getPlec());
+        patient.setNrDomu(p.getNrDomu());
+        patient.setMiasto(p.getMiasto());
+        patient.setKodPocztowy(p.getKodPocztowy());
+        patient.setNrTel(p.getNrTel());
+        patient.setEmail(p.getEmail());
+        patient.setCzyUbezp(p.isCzyUbezp());
+
+        session.getTransaction().commit();
+        session.close();
+        System.out.println("Successfully updated " + p.toString());
+
+    }
 
 
 }

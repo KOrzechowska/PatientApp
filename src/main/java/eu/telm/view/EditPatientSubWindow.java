@@ -4,28 +4,30 @@ import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import eu.telm.model.Patient;
 import eu.telm.util.ButtonFactory;
+import eu.telm.util.RowFactory;
+import eu.telm.util.TextFieldFactory;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Renfri on 06.01.2017.
  */
 public class EditPatientSubWindow extends Window {
-    //  private final TextField filter;
-    private String a;
-    private Button SaveButton;
+
     private Patient patient;
-    private TextField imie = new TextField("Imie");
-    private TextField nazwisko = new TextField("Nazwisko");
-    private TextField pesel = new TextField("Pesel");
-    private TextField email = new TextField("Email");
-    private PopupDateField birthDate = new PopupDateField("Data urodzenia");
-    private TextField plec = new TextField("Plec");
-    private TextField ulica = new TextField("Ulica");
-    private TextField miasto = new TextField("Miasto");
-    private TextField numer = new TextField("Numer domu");
-    private TextField kod = new TextField("Kod Pocztowy");
-    private TextField tel = new TextField("Numer telefonu");
+    private TextField imie;
+    private TextField nazwisko;
+    private TextField pesel;
+    private TextField email;
+    private DateField birthDate;
+    private TextField plec;
+    private TextField ulica;
+    private TextField miasto;
+    private TextField numer;
+    private TextField kod;
+    private TextField tel;
     public Button save;
     public Button cancel;
 
@@ -36,30 +38,34 @@ public class EditPatientSubWindow extends Window {
         center();
         setModal(true);
 
-
-        save = ButtonFactory.createButton("Zapisz", FontAwesome.SAVE, "saveButton");
-        cancel = ButtonFactory.createButton("Anuluj zmiany", FontAwesome.CLOSE, "cancel");
-        HorizontalLayout rzad1 = new HorizontalLayout(imie, nazwisko, pesel, birthDate);
-        rzad1.setSpacing(true);
-        rzad1.setMargin(true);
-        HorizontalLayout rzad2 = new HorizontalLayout(plec, ulica, miasto, numer);
-        rzad2.setSpacing(true);
-        rzad2.setMargin(true);
-        HorizontalLayout rzad3 = new HorizontalLayout(kod, tel, email);
-        rzad3.setSpacing(true);
-        rzad3.setMargin(true);
-        HorizontalLayout rzad4 = new HorizontalLayout(save, cancel);
-        rzad4.setSpacing(true);
-        rzad4.setSpacing(true);
-        VerticalLayout main = new VerticalLayout(rzad1, rzad2, rzad3, rzad4);
-        main.setSpacing(true);
-        main.setMargin(true);
-
-
-        // filter = new TextField();
-        setContent(main);
+        VerticalLayout patientData = new VerticalLayout();
+        List<HorizontalLayout> horizontalLayouts = new ArrayList<>();
+        List<Component> textFields = new ArrayList<>();
+        imie = TextFieldFactory.createTextField("Imię", true, textFields);
+        nazwisko = TextFieldFactory.createTextField("Nazwisko", true, textFields);
+        pesel = TextFieldFactory.createTextField("Pesel", true, textFields);
+        birthDate = TextFieldFactory.createDateField("Data urodzenia", true, textFields);
+        plec = TextFieldFactory.createTextField("Płeć", true, textFields);
+        ulica = TextFieldFactory.createTextField("Ulica", true, textFields);
+        miasto = TextFieldFactory.createTextField("Miasto", true, textFields);
+        numer = TextFieldFactory.createTextField("Numer domu", true, textFields);
+        kod = TextFieldFactory.createTextField("Kod pocztowy", true, textFields);
+        tel = TextFieldFactory.createTextField("Numer telefonu", true, textFields);
+        email = TextFieldFactory.createTextField("Adres e-mail", true, textFields);
+        CheckBox isInsured = TextFieldFactory.createCheckBox("Czy ubezpieczony", true, textFields);
+        List<Component> buttonsPatientPanel = new ArrayList<>();
+        save = ButtonFactory.createButton("Zapisz", FontAwesome.SAVE, buttonsPatientPanel, "editButton");
+        cancel = ButtonFactory.createButton("Anuluj", FontAwesome.CLOSE, buttonsPatientPanel, "searchButton");
+        horizontalLayouts = RowFactory.createRowsLayout(textFields);
+        horizontalLayouts.forEach(patientData::addComponent);
+        patientData.addComponent(RowFactory.createRowLayout(buttonsPatientPanel, "rowOfButtonsPatientPanel"));
+        setContent(patientData);
 
         this.patient = patient;
+    }
+
+    public void setClickController(Button.ClickListener ac){
+        this.save.addClickListener(ac);
     }
 
     public void ustawImie(String a) {
@@ -106,9 +112,6 @@ public class EditPatientSubWindow extends Window {
         birthDate.setValue(d);
     }
 
-    public void Anuluj() {
-        close();
-    }
 
     public void Save() {
 
@@ -126,6 +129,65 @@ public class EditPatientSubWindow extends Window {
 
     }
 
+    public Button getSave() {
+        return save;
+    }
+
+    public void setSave(Button save) {
+        this.save = save;
+    }
+
+    public Button getCancel() {
+        return cancel;
+    }
+
+    public void setCancel(Button cancel) {
+        this.cancel = cancel;
+    }
+
+    public TextField getImie() {
+        return imie;
+    }
+
+    public TextField getNazwisko() {
+        return nazwisko;
+    }
+
+    public TextField getPesel() {
+        return pesel;
+    }
+
+    public TextField getEmail() {
+        return email;
+    }
+
+    public DateField getBirthDate() {
+        return birthDate;
+    }
+
+    public TextField getUlica() {
+        return ulica;
+    }
+
+    public TextField getPlec() {
+        return plec;
+    }
+
+    public TextField getMiasto() {
+        return miasto;
+    }
+
+    public TextField getNumer() {
+        return numer;
+    }
+
+    public TextField getKod() {
+        return kod;
+    }
+
+    public TextField getTel() {
+        return tel;
+    }
 }
 
 

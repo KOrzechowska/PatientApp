@@ -13,4 +13,5 @@ public interface PatientDao {
 
     public List<Patient> getAll();
     public Long save(Patient p);
+    public void update(Patient p);
 }
