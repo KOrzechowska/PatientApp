@@ -93,4 +93,15 @@ public class BadaniaDaoImpl implements BadaniaDao {
         return realizacje;
     }
 
+    @Override
+    public Long save(Realizacje realizacje) {
+        Session session = this.sessionFactory.openSession();
+        session.beginTransaction();
+        session.save(realizacje);
+        session.getTransaction().commit();
+        session.close();
+        System.out.println("Successfully created " + realizacje.toString());
+        return realizacje.getId();
+    }
+
 }

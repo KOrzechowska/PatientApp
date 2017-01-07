@@ -46,9 +46,10 @@ public class DefaultView extends VerticalLayout implements View {
     private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11, tf12;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
-    //
+    private Button dodajBadanie;
+
     private EditPatientSubWindow editWindow;
-    //
+
     @Autowired
     public DefaultView(OperacjeDao operacjeDao, BadaniaDao badaniaDao, UI ui){
         this.patientDao =  (PatientDao)context.getBean("patientDao");
@@ -205,8 +206,8 @@ public class DefaultView extends VerticalLayout implements View {
         Button usunBadanie = ButtonFactory.createButton("Usuń", FontAwesome.TRASH, buttonListBadanie, "deleteButton");
         Button edytujBadanie = ButtonFactory.createButton("Edytuj", FontAwesome.EDIT, buttonListBadanie, "editButton");
         Button dodajWynikBadanie = ButtonFactory.createButton("Dodaj wynik", FontAwesome.BAR_CHART, buttonListBadanie, "addResultButton");
-        Button dodajBadanie = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, buttonListBadanie, "addButton");
-        ButtonFactory.setEnabledButtons(buttonListBadanie, 3, false);
+        dodajBadanie = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, buttonListBadanie, "addButton");
+        ButtonFactory.setEnabledButtons(buttonListBadanie, 4, false);
         form.addComponent(RowFactory.createRowLayout(buttonListBadanie, "rowOfButtons"));
 
         dodajBadanie.addClickListener(new Button.ClickListener() {
@@ -214,7 +215,9 @@ public class DefaultView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(subWindowAddTest);
                 subWindowAddTest.setClickController(testController);
-
+                testController.fillComboBox();
+                testController.setTabela(tabelaBadan);
+                testController.fillAddWindow();
             }
         });
 
@@ -313,6 +316,7 @@ public class DefaultView extends VerticalLayout implements View {
 
 
     public void deleteFromTable(Grid tabela, List<Component> buttonsUnderTabel){
+        badaniaDao = (BadaniaDao) context.getBean("badaniaDao");
         Object selected = ((Grid.SingleSelectionModel)
                 tabela.getSelectionModel()).getSelectedRow();
         if (selected != null) {
@@ -393,6 +397,7 @@ public class DefaultView extends VerticalLayout implements View {
 
     public BadaniaDao getBadaniaDao(){return badaniaDao;}
     public OperacjeDao getOperacjeDao(){return operacjeDao;}
+    public Button getDodajBadanieButton() {return dodajBadanie;}
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {

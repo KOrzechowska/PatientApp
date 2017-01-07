@@ -16,5 +16,6 @@ public interface BadaniaDao{
     public Realizacje findById(Long id);
     public void delete(Long id);
     public void update(Realizacje realizacje);
+    public Long save(Realizacje relizacje);
 
 }

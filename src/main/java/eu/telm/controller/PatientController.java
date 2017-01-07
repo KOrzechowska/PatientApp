@@ -105,6 +105,7 @@ public class PatientController implements Button.ClickListener{
             defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
             //System.out.println(model.getId());
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+            defaultView.getDodajBadanieButton().setEnabled(true);
             /*
             List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(model.getId());
             List<Object[]> realizacjeTable = new ArrayList<>();

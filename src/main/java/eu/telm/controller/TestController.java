@@ -24,6 +24,7 @@ public class TestController implements Button.ClickListener {
     private DefaultView defaultView;
     private Patient model;
     private Boolean editting = false;
+    private Boolean add=false;
     private Realizacje realizacje;
     private Grid tabela;
 
@@ -79,6 +80,29 @@ public class TestController implements Button.ClickListener {
                 badaniaDao.update(realizacje);
                 fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
                 subWindowAddTest.close();
+                editting=false;
+
+            }
+        }
+
+        if (add){
+            if(source == subWindowAddTest.getAddTestButton()){
+                Realizacje real = new Realizacje();
+                DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+                try {
+                    real.setData(formatter.parse(subWindowAddTest.getDateField().getValue().toString()));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                real.setPatient(model);
+                OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
+                Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
+                real.setOperacja(operacja);
+                BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+                badaniaDao.save(real);
+                fillTable(tabela, badaniaDao, real.getPatient().getId());
+                subWindowAddTest.close();
+                add=false;
 
             }
         }
@@ -100,6 +124,13 @@ public class TestController implements Button.ClickListener {
         subWindowAddTest.getCommentsTextField().setValue(realizacje.getUwagi());
         subWindowAddTest.getDateField().setValue(realizacje.getData());
         subWindowAddTest.getNameComboBox().setValue(nazwa);
+    }
+
+    public void fillAddWindow(){
+        subWindowAddTest.getResultTextField().setEnabled(false);
+        subWindowAddTest.getCommentsTextField().setEnabled(false);
+        subWindowAddTest.getNameComboBox().clear();
+        add = true;
     }
 
     public void fillTable(Grid tabelaBadan, BadaniaDao badaniaDao, long id){
