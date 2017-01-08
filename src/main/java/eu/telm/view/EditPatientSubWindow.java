@@ -63,6 +63,9 @@ public class EditPatientSubWindow extends Window {
 
         this.patient = patient;
     }
+    public void setCController(Button.ClickListener a){
+        this.cancel.addClickListener(a);
+    }
 
     public void setClickController(Button.ClickListener ac){
         this.save.addClickListener(ac);
