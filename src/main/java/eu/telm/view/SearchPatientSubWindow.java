@@ -70,7 +70,8 @@ public class SearchPatientSubWindow extends Window {
     public void setClickController(Button.ClickListener ac){
         this.getSelectedPatientButton.addClickListener(ac);
     }
-
+    public void setCController(Button.ClickListener ac){this.createNewPatientButton.addClickListener(ac);}
+    public Button getCreateNewPatientButton(){return createNewPatientButton;}
     public Button getGetSelectedPatientButton(){
         return this.getSelectedPatientButton;
     }
