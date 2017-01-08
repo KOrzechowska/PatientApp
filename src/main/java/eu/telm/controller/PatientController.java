@@ -26,7 +26,7 @@ public class PatientController implements Button.ClickListener{
     private Patient model;
     private EditPatientSubWindow editWindow;
     private EditPatientSubWindow addWindow;
-    private Patient nowy;
+
 
     public PatientController(SearchPatientSubWindow subWindow, EditPatientSubWindow editWindow, Patient model , DefaultView defaultView){
         this. subWindow = subWindow;
@@ -90,23 +90,20 @@ public class PatientController implements Button.ClickListener{
 
     public void updateNewPatient() {
 
-        System.out.println(nowy.getId());
-        nowy.setImie(addWindow.getImie().getValue());
-        nowy.setNazwisko(addWindow.getNazwisko().getValue());
-        nowy.setPesel(addWindow.getPesel().getValue());
-        nowy.setPlec(addWindow.getPlec().getValue());
-        nowy.setEmail(addWindow.getEmail().getValue());
-        nowy.setNrTel(addWindow.getTel().getValue());
-        nowy.setUlica(addWindow.getUlica().getValue());
-        nowy.setMiasto(addWindow.getMiasto().getValue());
-        nowy.setNrDomu(addWindow.getNumer().getValue());
-        nowy.setKodPocztowy(addWindow.getKod().getValue());
-        nowy.setDataUr(addWindow.getBirthDate().getValue());
+        System.out.println(model.getId());
+        model.setImie(addWindow.getImie().getValue());
+        model.setNazwisko(addWindow.getNazwisko().getValue());
+        model.setPesel(addWindow.getPesel().getValue());
+        model.setPlec(addWindow.getPlec().getValue());
+        model.setEmail(addWindow.getEmail().getValue());
+        model.setNrTel(addWindow.getTel().getValue());
+        model.setUlica(addWindow.getUlica().getValue());
+        model.setMiasto(addWindow.getMiasto().getValue());
+        model.setNrDomu(addWindow.getNumer().getValue());
+        model.setKodPocztowy(addWindow.getKod().getValue());
+        model.setDataUr(addWindow.getBirthDate().getValue());
     }
 
-    public void Zapisz() {
-        model.setImie(defaultView.getTextFieldImie().getValue());
-    }
     public void btnCLick(Button.ClickEvent ce) {
         Object source = ce.getSource();
         if (source == addWindow.getCancel()) {
@@ -114,11 +111,15 @@ public class PatientController implements Button.ClickListener{
         }
         if (source == addWindow.getSave()) {
             updateNewPatient();
-            System.out.println("DATA\t"+nowy.getDataUr());
-            defaultView.fillPatientPanel(nowy);
+            System.out.println("ID\t"+model.getId());
+            defaultView.fillPatientPanel(model);
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
-            patientDao.save(nowy);
+            model.setId(patientDao.save(model));
             addWindow.close();
+            BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
+            defaultView.getDodajBadanieButton().setEnabled(true);
+            defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
+
 
         }
     }
@@ -146,6 +147,7 @@ public class PatientController implements Button.ClickListener{
         }
 
         if (source == editWindow.getCancel()){
+            System.out.println("ZAMKNIJ");
             editWindow.close();
         }
         if (source == editWindow.getSave()){
@@ -157,8 +159,8 @@ public class PatientController implements Button.ClickListener{
         }
         if (source == subWindow.getCreateNewPatientButton()) {
             UI ui = defaultView.getUI();
-            nowy = new Patient();
-            addWindow = new EditPatientSubWindow(nowy);
+            model = new Patient();
+            addWindow = new EditPatientSubWindow(model);
             addWindow.setCaption("Dodaj nowego pacjenta");
             ui.addWindow(addWindow);
             subWindow.close();

@@ -121,8 +121,8 @@ public class DefaultView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(editWindow);
                 editWindow.setClickController(patientController);
-                editWindow.setCController(patientController);
-                patientController.setModel(patient);
+               // editWindow.setCController(patientController);
+               // patientController.setModel(patient);
                 patientController.fillEditWindow();
             }
         });
@@ -346,7 +346,7 @@ public class DefaultView extends VerticalLayout implements View {
         tf1.setValue(model.getImie());
         tf2.setValue(model.getNazwisko());
         tf3.setValue(model.getPesel());
-        dateField.setValue(patient.getDataUr());
+        dateField.setValue(model.getDataUr());
         tf5.setValue(model.getPlec());
         tf6.setValue(model.getUlica());
         tf7.setValue(model.getMiasto());
