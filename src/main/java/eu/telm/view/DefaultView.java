@@ -42,10 +42,12 @@ public class DefaultView extends VerticalLayout implements View {
     private Patient patient;
     private PatientController patientController;
     private TestController testController;
-    private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11, tf12;
+    private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
     private Button dodajBadanie;
+    private CheckBox isInsured;
+
 
     private EditPatientSubWindow editWindow;
 
@@ -94,7 +96,7 @@ public class DefaultView extends VerticalLayout implements View {
         tf9 = TextFieldFactory.createTextField("Kod pocztowy", false, textFields);
         tf10 = TextFieldFactory.createTextField("Numer telefonu", false, textFields);
         tf11 = TextFieldFactory.createTextField("Adres e-mail", false, textFields);
-        CheckBox isInsured = TextFieldFactory.createCheckBox("Czy ubezpieczony", false, textFields);
+        isInsured = TextFieldFactory.createCheckBox("Czy ubezpieczony", false, textFields);
         List<Component> buttonsPatientPanel = new ArrayList<>();
         editPatientButton = ButtonFactory.createButton("Edytuj", FontAwesome.EDIT, buttonsPatientPanel, "editButton");
         searchPatientButton = ButtonFactory.createButton("Szukaj", FontAwesome.SEARCH, buttonsPatientPanel, "searchButton");
@@ -354,6 +356,7 @@ public class DefaultView extends VerticalLayout implements View {
         tf9.setValue(model.getKodPocztowy());
         tf10.setValue(model.getNrTel());
         tf11.setValue(model.getEmail());
+        isInsured.setValue(model.isCzyUbezp());
     }
 
     public DateField getDateField() {
@@ -379,7 +382,7 @@ public class DefaultView extends VerticalLayout implements View {
     public TextField getTextFieldKodPocztowy(){return tf9;}
     public TextField getTextFieldNrTel(){return tf10;}
     public TextField getTextFieldEmail(){return tf11;}
-    public TextField getTextFieldCzyUbezp(){return tf12;}
+    public CheckBox getCheckBoxCzyUbezpieczony(){return isInsured;}
     public Grid getTabelaBadan(){return tabelaBadan;}
 
     public Grid getTabelaZabiegow() {

@@ -49,6 +49,7 @@ public class PatientController implements Button.ClickListener{
         model.setMiasto(subWindow.getSelectedPatient().getMiasto());
         model.setNrDomu(subWindow.getSelectedPatient().getNrDomu());
         model.setKodPocztowy(subWindow.getSelectedPatient().getKodPocztowy());
+        model.setCzyUbezp(subWindow.getSelectedPatient().isCzyUbezp());
         //System.out.println(model.getImie());
     }
 
@@ -70,6 +71,7 @@ public class PatientController implements Button.ClickListener{
         model.setMiasto(editWindow.getMiasto().getValue());
         model.setNrDomu(editWindow.getNumer().getValue());
         model.setKodPocztowy(editWindow.getKod().getValue());
+        model.setCzyUbezp(editWindow.getCzyUbezpieczony().getValue());
 
     }
 
@@ -86,6 +88,7 @@ public class PatientController implements Button.ClickListener{
         editWindow.ustawKod(model.getKodPocztowy());
         editWindow.ustawTelefon(model.getNrTel());
         editWindow.ustawDateUrodzenia(model.getDataUr());
+        editWindow.ustawCzyUbezpieczony(model.isCzyUbezp());
     }
 
     public void updateNewPatient() {
@@ -102,6 +105,7 @@ public class PatientController implements Button.ClickListener{
         model.setNrDomu(addWindow.getNumer().getValue());
         model.setKodPocztowy(addWindow.getKod().getValue());
         model.setDataUr(addWindow.getBirthDate().getValue());
+        model.setCzyUbezp(addWindow.getCzyUbezpieczony().getValue());
     }
 
     public void btnCLick(Button.ClickEvent ce) {
@@ -119,8 +123,6 @@ public class PatientController implements Button.ClickListener{
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
             defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
-
-
         }
     }
 
@@ -139,6 +141,7 @@ public class PatientController implements Button.ClickListener{
             defaultView.getTextFieldMiasto().setValue(model.getMiasto());
             defaultView.getDateField().setValue(model.getDataUr());
             defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
+            defaultView.getCheckBoxCzyUbezpieczony().setValue(model.isCzyUbezp());
             //System.out.println(model.getId());
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
