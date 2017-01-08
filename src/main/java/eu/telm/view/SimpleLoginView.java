@@ -7,12 +7,19 @@ import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.Reindeer;
+import eu.telm.model.User;
+import eu.telm.model.UserDao;
+import eu.telm.model.UserRole;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
+import java.util.Set;
 
 /**
  * Created by kasia on 07.01.17.
  */
 public class SimpleLoginView extends CustomComponent implements View,
         Button.ClickListener {
+    public static User currentUser;
 
     public static final String NAME = "login";
 
@@ -96,11 +103,6 @@ public class SimpleLoginView extends CustomComponent implements View,
     @Override
     public void buttonClick(Button.ClickEvent event) {
 
-        //
-        // Validate the fields using the navigator. By using validors for the
-        // fields we reduce the amount of queries we have to use to the database
-        // for wrongly entered passwords
-        //
         if (!user.isValid() || !password.isValid()) {
             return;
         }
@@ -112,8 +114,7 @@ public class SimpleLoginView extends CustomComponent implements View,
         // Validate username and password with database here. For examples sake
         // I use a dummy username and password.
         //
-        boolean isValid = username.equals("test@test.com")
-                && password.equals("passw0rd");
+        boolean isValid = isUserInDB(username, password);
 
         if (isValid) {
 
@@ -130,5 +131,20 @@ public class SimpleLoginView extends CustomComponent implements View,
             this.password.focus();
 
         }
+    }
+
+    public boolean isUserInDB(String username, String password){
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring.xml");
+        UserDao userDao = (UserDao)context.getBean("userDao");
+        User user = userDao.findByUserName(username);
+        if(user!= null){
+            if(user.getPassword().equals(password)) {
+                currentUser = user;
+                return true;
+            }
+            else return false;
+        }
+        else return false;
+
     }
 }

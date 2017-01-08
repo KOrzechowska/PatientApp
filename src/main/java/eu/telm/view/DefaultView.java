@@ -1,7 +1,6 @@
 package eu.telm.view;
 
 import com.vaadin.annotations.Theme;
-import com.vaadin.event.Action;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
@@ -18,8 +17,8 @@ import eu.telm.util.TextFieldFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-
 import javax.annotation.PostConstruct;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,6 +72,7 @@ public class DefaultView extends VerticalLayout implements View {
         editWindow.setWidth("80%");
         editWindow.setHeight("80%");
         editWindow.center();
+
         //
     }
     @PostConstruct
@@ -108,13 +108,11 @@ public class DefaultView extends VerticalLayout implements View {
         patientData.addComponent(RowFactory.createRowLayout(buttonsPatientPanel, "rowOfButtonsPatientPanel"));
 
         patientDataPanel.setContent(patientData);
-
         addComponent(form);
         searchPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(subWindow);
-
                 subWindow.setClickController(patientController);
                 editPatientButton.setEnabled(true);
 
@@ -344,6 +342,8 @@ public class DefaultView extends VerticalLayout implements View {
             System.out.println("zaznaczył");
             ButtonFactory.setEnabledButtons(buttonsUnderTable, 3, true);
         }
+        if(!SimpleLoginView.currentUser.getUserRole().contains("ROLE_DOCTOR"))
+            buttonsUnderTable.get(2).setEnabled(false);
     }
 
     public void fillPatientPanel(Patient model){

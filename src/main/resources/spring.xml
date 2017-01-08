@@ -17,6 +17,8 @@
         <property name="dataSource" ref="dataSource" />
         <property name="annotatedClasses">
             <list>
+                <value>eu.telm.model.User</value>
+                <value>eu.telm.model.UserRole</value>
                 <value>eu.telm.model.Patient</value>
                 <value>eu.telm.model.Realizacje</value>
                 <value>eu.telm.model.Operacja</value>
@@ -31,7 +33,9 @@
     </props>
 </property>
 </bean>
-
+    <bean id="userDao" class="eu.telm.model.UserDaoImpl">
+        <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
+    </bean>
     <bean id="patientDao" class="eu.telm.model.PatientDaoImpl">
     <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
 </bean>
