@@ -3,6 +3,7 @@ package eu.telm.controller;
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.UI;
 import eu.telm.model.BadaniaDao;
 import eu.telm.model.PatientDao;
 import eu.telm.model.Realizacje;
@@ -24,14 +25,14 @@ public class PatientController implements Button.ClickListener{
     private DefaultView defaultView;
     private Patient model;
     private EditPatientSubWindow editWindow;
+    private EditPatientSubWindow addWindow;
+    private Patient nowy;
 
     public PatientController(SearchPatientSubWindow subWindow, EditPatientSubWindow editWindow, Patient model , DefaultView defaultView){
         this. subWindow = subWindow;
         this.defaultView = defaultView;
         this. model = model;
-        //
         this.editWindow = editWindow;
-        //
     }
 
     public void updatePatient(){
@@ -64,7 +65,7 @@ public class PatientController implements Button.ClickListener{
         model.setPlec(editWindow.getPlec().getValue());
         model.setEmail(editWindow.getEmail().getValue());
         model.setNrTel(editWindow.getTel().getValue());
-        model.setDataUr((java.sql.Date)(editWindow.getBirthDate().getValue()));
+      //  model.setDataUr((java.sql.Date)(editWindow.getBirthDate().getValue()));
         model.setUlica(editWindow.getUlica().getValue());
         model.setMiasto(editWindow.getMiasto().getValue());
         model.setNrDomu(editWindow.getNumer().getValue());
@@ -87,6 +88,20 @@ public class PatientController implements Button.ClickListener{
         editWindow.ustawDateUrodzenia(model.getDataUr());
     }
 
+    public void updateNewPatient() {
+
+        System.out.println(nowy.getId());
+        nowy.setImie(addWindow.getImie().getValue());
+        nowy.setNazwisko(addWindow.getNazwisko().getValue());
+        nowy.setPesel(addWindow.getPesel().getValue());
+        nowy.setPlec(addWindow.getPlec().getValue());
+        nowy.setEmail(addWindow.getEmail().getValue());
+        nowy.setNrTel(addWindow.getTel().getValue());
+        nowy.setUlica(addWindow.getUlica().getValue());
+        nowy.setMiasto(addWindow.getMiasto().getValue());
+        nowy.setNrDomu(addWindow.getNumer().getValue());
+        nowy.setKodPocztowy(addWindow.getKod().getValue());
+    }
     /**
      * funkacja uzupełniająca pola na głównej stronie
      * danymi pacjenta po ich edycji
@@ -95,8 +110,26 @@ public class PatientController implements Button.ClickListener{
         defaultView.fillPatientPanel(model);
 
     }
+
+    public void add_fillMainWindow() {
+        defaultView.fillPatientPanel(nowy);
+    }
     public void Zapisz() {
         model.setImie(defaultView.getTextFieldImie().getValue());
+    }
+    public void btnCLick(Button.ClickEvent ce) {
+        Object source = ce.getSource();
+        if (source == addWindow.getCancel()) {
+            addWindow.close();
+        }
+        if (source == addWindow.getSave()) {
+            updateNewPatient();
+            add_fillMainWindow();
+            PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
+            patientDao.save(nowy);
+            addWindow.close();
+
+        }
     }
 
     @Override
@@ -130,6 +163,28 @@ public class PatientController implements Button.ClickListener{
             PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
             patientDao.update(model);
             editWindow.close();
+        }
+        if (source == subWindow.getCreateNewPatientButton()) {
+            UI ui = defaultView.getUI();
+            nowy = new Patient();
+            addWindow = new EditPatientSubWindow(nowy);
+            addWindow.setCaption("Dodaj nowego pacjenta");
+            ui.addWindow(addWindow);
+            subWindow.close();
+            addWindow.cancel.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent clickEvent) {
+                    btnCLick(clickEvent);
+                }
+            });
+            addWindow.save.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent clickEvent) {
+                    btnCLick(clickEvent);
+                }
+            });
+
+
         }
     }
 

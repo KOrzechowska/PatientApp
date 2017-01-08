@@ -67,13 +67,9 @@ public class DefaultView extends VerticalLayout implements View {
         subWindowAddTest.setHeight("80%");
         subWindowAddTest.center();
         testController = new TestController(subWindowAddTest, patient,this);
-        //
-
         editWindow.setWidth("80%");
         editWindow.setHeight("80%");
         editWindow.center();
-
-        //
     }
     @PostConstruct
     void init() {
@@ -115,11 +111,11 @@ public class DefaultView extends VerticalLayout implements View {
                 ui.addWindow(subWindow);
                 subWindow.setClickController(patientController);
                 editPatientButton.setEnabled(true);
-
+                subWindow.setCController(patientController);
             }
         });
 
-        //
+
         editPatientButton.addClickListener(new Button.ClickListener() {
             @Override
             public void buttonClick(Button.ClickEvent clickEvent) {
@@ -130,8 +126,7 @@ public class DefaultView extends VerticalLayout implements View {
             }
         });
 
-
-        //
+        
 
         Panel badaniaPanel = new Panel("Badania");
         badaniaPanel.setIcon(FontAwesome.STETHOSCOPE);
