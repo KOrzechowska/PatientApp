@@ -101,19 +101,9 @@ public class PatientController implements Button.ClickListener{
         nowy.setMiasto(addWindow.getMiasto().getValue());
         nowy.setNrDomu(addWindow.getNumer().getValue());
         nowy.setKodPocztowy(addWindow.getKod().getValue());
-    }
-    /**
-     * funkacja uzupełniająca pola na głównej stronie
-     * danymi pacjenta po ich edycji
-     */
-    public void fillMainWindow(){
-        defaultView.fillPatientPanel(model);
-
+        nowy.setDataUr(addWindow.getBirthDate().getValue());
     }
 
-    public void add_fillMainWindow() {
-        defaultView.fillPatientPanel(nowy);
-    }
     public void Zapisz() {
         model.setImie(defaultView.getTextFieldImie().getValue());
     }
@@ -124,7 +114,8 @@ public class PatientController implements Button.ClickListener{
         }
         if (source == addWindow.getSave()) {
             updateNewPatient();
-            add_fillMainWindow();
+            System.out.println("DATA\t"+nowy.getDataUr());
+            defaultView.fillPatientPanel(nowy);
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
             patientDao.save(nowy);
             addWindow.close();
@@ -159,7 +150,7 @@ public class PatientController implements Button.ClickListener{
         }
         if (source == editWindow.getSave()){
             updateEdittedPatient();
-            fillMainWindow();
+            defaultView.fillPatientPanel(model);
             PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
             patientDao.update(model);
             editWindow.close();

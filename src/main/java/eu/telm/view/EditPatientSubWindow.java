@@ -7,7 +7,7 @@ import eu.telm.util.ButtonFactory;
 import eu.telm.util.RowFactory;
 import eu.telm.util.TextFieldFactory;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 

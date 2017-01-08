@@ -346,7 +346,7 @@ public class DefaultView extends VerticalLayout implements View {
         tf1.setValue(model.getImie());
         tf2.setValue(model.getNazwisko());
         tf3.setValue(model.getPesel());
-        dateField.setData(patient.getDataUr());
+        dateField.setValue(patient.getDataUr());
         tf5.setValue(model.getPlec());
         tf6.setValue(model.getUlica());
         tf7.setValue(model.getMiasto());
