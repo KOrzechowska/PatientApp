@@ -121,6 +121,7 @@ public class DefaultView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(editWindow);
                 editWindow.setClickController(patientController);
+                editWindow.setCController(patientController);
                 patientController.setModel(patient);
                 patientController.fillEditWindow();
             }
