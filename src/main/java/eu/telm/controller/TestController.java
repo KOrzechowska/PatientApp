@@ -70,6 +70,7 @@ public class TestController implements Button.ClickListener {
                 else {
                     real.setData(subWindowAddTest.getDateField().getValue());
                     real.setPatient(model);
+                    System.out.println("PACJENT\t"+model.getImie()+model.getId());
                     OperacjeDao operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
                     Operacja operacja = operacjeDao.getByName(subWindowAddTest.getNameComboBox().getValue().toString());
                     real.setOperacja(operacja);
@@ -170,5 +171,9 @@ public class TestController implements Button.ClickListener {
 
     public void setTabela(Grid tabela) {
         this.tabela = tabela;
+    }
+
+    public void setModel(Patient model) {
+        this.model = model;
     }
 }

@@ -63,7 +63,7 @@ public class EditPatientSubWindow extends Window {
 
         this.patient = patient;
     }
-   
+
 
     public void setClickController(Button.ClickListener ac){
         this.save.addClickListener(ac);

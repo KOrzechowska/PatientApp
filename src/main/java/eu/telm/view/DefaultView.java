@@ -169,7 +169,9 @@ public class DefaultView extends VerticalLayout implements View {
             public void buttonClick(Button.ClickEvent clickEvent) {
                 ui.addWindow(subWindowAddTest);
                 subWindowAddTest.setClickController(testController);
+                System.out.println("PACJENT\t"+patient.getImie()+patient.getId());
                 testController.fillComboBox();
+                testController.setModel(patient);
                 testController.setTabela(tabelaBadan);
                 testController.fillAddWindow();
             }
@@ -392,5 +394,9 @@ public class DefaultView extends VerticalLayout implements View {
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {
+    }
+
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 }
