@@ -30,6 +30,7 @@ public class EditPatientSubWindow extends Window {
     private TextField tel;
     public Button save;
     public Button cancel;
+    CheckBox isInsured;
 
 
     public EditPatientSubWindow(Patient patient) {
@@ -52,7 +53,7 @@ public class EditPatientSubWindow extends Window {
         kod = TextFieldFactory.createTextField("Kod pocztowy", true, textFields);
         tel = TextFieldFactory.createTextField("Numer telefonu", true, textFields);
         email = TextFieldFactory.createTextField("Adres e-mail", true, textFields);
-        CheckBox isInsured = TextFieldFactory.createCheckBox("Czy ubezpieczony", true, textFields);
+        isInsured = TextFieldFactory.createCheckBox("Czy ubezpieczony", true, textFields);
         List<Component> buttonsPatientPanel = new ArrayList<>();
         save = ButtonFactory.createButton("Zapisz", FontAwesome.SAVE, buttonsPatientPanel, "editButton");
         cancel = ButtonFactory.createButton("Anuluj", FontAwesome.CLOSE, buttonsPatientPanel, "searchButton");
@@ -112,6 +113,10 @@ public class EditPatientSubWindow extends Window {
 
     public void ustawDateUrodzenia(Date d) {
         birthDate.setValue(d);
+    }
+
+    public void  ustawCzyUbezpieczony(Boolean b){
+        isInsured.setValue(b);
     }
 
 
@@ -189,6 +194,10 @@ public class EditPatientSubWindow extends Window {
 
     public TextField getTel() {
         return tel;
+    }
+
+    public  CheckBox getCzyUbezpieczony(){
+        return isInsured;
     }
 }
 
