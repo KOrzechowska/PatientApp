@@ -1,5 +1,5 @@
-insert into uzytkownicy (username, password, enabled) values ('jan.kowal@wp.pl', '123456789', true);
-insert into uzytkownicy (username, password, enabled) values ('test@test.com', 'passw0rd', true);
+insert into uzytkownicy (username, password, enabled) values ('jan.kowal@wp.pl', '1000:5c8f5be6a586814133316cd6f597b4d5:47b8ed36c38d85f02ba43808592f12c3575c9c1ee0775f57ca06167c2c95249f5f8e0faada04892dc85e5af7cd7527164747cd8adf5711c287f60993ad0819fe', true);
+insert into uzytkownicy (username, password, enabled) values ('test@test.com', '1000:5c8f5be6a586814133316cd6f597b4d5:47b8ed36c38d85f02ba43808592f12c3575c9c1ee0775f57ca06167c2c95249f5f8e0faada04892dc85e5af7cd7527164747cd8adf5711c287f60993ad0819fe', true);
 
 insert into role_uzytkownikow (user_id, role) values (1, 'ROLE_DOCTOR');
 insert into role_uzytkownikow (user_id, role) values (2, 'ROLE_NURSE');

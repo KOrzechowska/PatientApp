@@ -12,6 +12,10 @@ import eu.telm.model.UserDao;
 import eu.telm.model.UserRole;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.Set;
 
 /**
@@ -138,13 +142,49 @@ public class SimpleLoginView extends CustomComponent implements View,
         UserDao userDao = (UserDao)context.getBean("userDao");
         User user = userDao.findByUserName(username);
         if(user!= null){
-            if(user.getPassword().equals(password)) {
-                currentUser = user;
-                return true;
+            //if(user.getPassword().equals(password)) {
+            try {
+                if(validatePassword(password, user.getPassword())){
+                    currentUser = user;
+                    return true;
+                }
+                else return false;
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (InvalidKeySpecException e) {
+                e.printStackTrace();
             }
-            else return false;
         }
         else return false;
+        return false;
+    }
 
+
+    private static boolean validatePassword(String originalPassword, String storedPassword) throws NoSuchAlgorithmException, InvalidKeySpecException
+    {
+        String[] parts = storedPassword.split(":");
+        int iterations = Integer.parseInt(parts[0]);
+        byte[] salt = fromHex(parts[1]);
+        byte[] hash = fromHex(parts[2]);
+
+        PBEKeySpec spec = new PBEKeySpec(originalPassword.toCharArray(), salt, iterations, hash.length * 8);
+        SecretKeyFactory skf = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA1");
+        byte[] testHash = skf.generateSecret(spec).getEncoded();
+
+        int diff = hash.length ^ testHash.length;
+        for(int i = 0; i < hash.length && i < testHash.length; i++)
+        {
+            diff |= hash[i] ^ testHash[i];
+        }
+        return diff == 0;
+    }
+    private static byte[] fromHex(String hex) throws NoSuchAlgorithmException
+    {
+        byte[] bytes = new byte[hex.length() / 2];
+        for(int i = 0; i<bytes.length ;i++)
+        {
+            bytes[i] = (byte)Integer.parseInt(hex.substring(2 * i, 2 * i + 2), 16);
+        }
+        return bytes;
     }
 }
