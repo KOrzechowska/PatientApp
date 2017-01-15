@@ -1,5 +1,6 @@
 package eu.telm.view;
 
+import com.vaadin.data.validator.*;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import eu.telm.model.Patient;
@@ -7,6 +8,7 @@ import eu.telm.util.ButtonFactory;
 import eu.telm.util.RowFactory;
 import eu.telm.util.TextFieldFactory;
 
+import javax.xml.bind.ValidationEvent;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,8 +65,60 @@ public class EditPatientSubWindow extends Window {
         setContent(patientData);
 
         this.patient = patient;
+        imie.addValidator(new StringLengthValidator("Podaj imie",2,20,false));
+        imie.setRequired(true);
+        nazwisko.addValidator(new StringLengthValidator("Podaj nazwisko", 2, 20, false));
+        nazwisko.setRequired(true);
+
+
+        pesel.addValidator(new StringLengthValidator("Podaj PESEL", 11, 11, false));
+        pesel.setRequired(true);
+
+
+     //   imie.setInvalidAllowed(false);
     }
 
+    public int Waliduj(){
+        if (sprawdz(pesel.getValue())!=1){
+            return 2;
+        }
+
+        if (imie.isValid() && nazwisko.isValid() && pesel.isValid()){
+            return 0;
+        }
+
+        else
+            return 1;
+
+    }
+    
+    public int sprawdz(String a){
+        int Pesel[]=new int[11];
+        int[] wagi= {1, 3, 7, 9, 2, 3, 7, 9, 1, 3};
+        if(a.length()!=11)
+            return 0;
+        for(int i=0; i<10; i++)
+        {
+            Pesel[i]=Integer.parseInt(a.substring(i,i+1)); //na pozniej
+            if (Pesel[i]!=0 ||Pesel[i]!=1 ||Pesel[i]!=2||Pesel[i]!=3||Pesel[i]!=4||Pesel[i]!=5
+                    ||Pesel[i]!=6||Pesel[i]!=7||Pesel[i]!=8||Pesel[i]!=9){
+                return 0;
+            }
+        }
+        int suma=0; //suma kontrolna
+        for(int i=0; i<10; i++)
+        {
+            suma+=Integer.parseInt(a.substring(i, i+1))*wagi[i]; //do cyfry kontrolnej
+        }
+        int cyfraKontrolna = Integer.parseInt(a.substring(10,11));
+        suma%=10;
+        suma=10-suma;
+        suma%=10;
+        if (suma==cyfraKontrolna)
+            return 1;
+        else
+            return 0;
+    }
 
     public void setClickController(Button.ClickListener ac){
         this.save.addClickListener(ac);
