@@ -14,15 +14,3 @@ insert into slownik_operacji (operacja_id, nazwa, opis, typ) values (5, 'Laparos
 insert into slownik_operacji (operacja_id, nazwa, opis, typ) values (6, 'Wymiana zastawki serca', 'Zabieg kardiochirurgiczny. Wskazane jest odstawienie leków przeciwkrzepliwych. W przeddzień operacji należy zgłosić się do szpitala.', 'ZABIEG');
 insert into slownik_operacji (operacja_id, nazwa, opis, typ) values (7, 'Septoplastyka', 'Korekcja przegrody nosa. Na kilka dni przed zabiegiem należy odbyć kosultację anastezjologiczną. Pozostać na czczo na 4-6 godzin przed zabiegiem.', 'ZABIEG');
 insert into slownik_operacji (operacja_id, nazwa, opis, typ) values (8, 'Operacja jaskry', 'Obniżenie ciśnienia śródgałkowego. Szczegóły przygotowania do zabiegu należy omówić z lekarzem.', 'ZABIEG');
-
-
-DROP TABLE IF EXISTS 'auditlog';
-CREATE TABLE `auditlog` (
-  `AUDIT_LOG_ID` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `ACTION` varchar(100) NOT NULL,
-  `DETAIL` text NOT NULL,
-  `CREATED_DATE` date NOT NULL,
-  `ENTITY_ID` bigint(20) unsigned NOT NULL,
-  `ENTITY_NAME` varchar(255) NOT NULL,
-  PRIMARY KEY (`AUDIT_LOG_ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
