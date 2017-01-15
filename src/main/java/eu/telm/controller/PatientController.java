@@ -1,9 +1,7 @@
 package eu.telm.controller;
 
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.UI;
+import com.vaadin.ui.*;
 import eu.telm.model.BadaniaDao;
 import eu.telm.model.PatientDao;
 import eu.telm.model.Realizacje;
@@ -116,6 +114,7 @@ public class PatientController implements Button.ClickListener{
         if (source == addWindow.getSave()) {
             updateNewPatient();
             defaultView.fillPatientPanel(model);
+            if (addWindow.Waliduj()==0){
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
             model.setId(patientDao.save(model));
             addWindow.close();
@@ -123,7 +122,15 @@ public class PatientController implements Button.ClickListener{
             defaultView.getDodajBadanieButton().setEnabled(true);
             defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
             System.out.println("ID\t"+model.getId());
-            defaultView.setPatient(model);
+            defaultView.setPatient(model);}
+
+            if (addWindow.Waliduj()==1){
+                Notification.show("Wpisz brakujące dane");
+            }
+
+            if (addWindow.Waliduj()==2){
+                Notification.show("Popraw Pesel");
+            }
         }
     }
 
@@ -157,9 +164,19 @@ public class PatientController implements Button.ClickListener{
         if (source == editWindow.getSave()){
             updateEdittedPatient();
             defaultView.fillPatientPanel(model);
+            if (editWindow.Waliduj()==0){
             PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
             patientDao.update(model);
             editWindow.close();
+            }
+            if(editWindow.Waliduj()==1){
+                Notification.show("Wpisz brakujace dane");
+            }
+            if(editWindow.Waliduj()==2){
+                Notification.show("Popraw Pesel");
+            }
+
+
         }
         if (source == subWindow.getCreateNewPatientButton()) {
             UI ui = defaultView.getUI();
