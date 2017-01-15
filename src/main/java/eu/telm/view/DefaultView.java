@@ -25,6 +25,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Theme("colored")
 @SpringView(name = DefaultView.VIEW_NAME)
@@ -339,11 +340,20 @@ public class DefaultView extends VerticalLayout implements View {
         if (e.getSelected().isEmpty()) {
             ButtonFactory.setEnabledButtons(buttonsUnderTable, 3, false);
         } else {
-            System.out.println("zaznaczył");
             ButtonFactory.setEnabledButtons(buttonsUnderTable, 3, true);
+            if(!searchRole(SimpleLoginView.currentUser.getUserRole(), "ROLE_DOCTOR")) {
+                buttonsUnderTable.get(2).setEnabled(false);
+            }
         }
-        if(!SimpleLoginView.currentUser.getUserRole().contains("ROLE_DOCTOR"))
-            buttonsUnderTable.get(2).setEnabled(false);
+
+    }
+
+    private boolean searchRole(Set<UserRole> roles, String searchValue){
+        for(UserRole userRole : roles){
+            if(userRole.getRole().contains(searchValue))
+                return true;
+        }
+        return false;
     }
 
     public void fillPatientPanel(Patient model){

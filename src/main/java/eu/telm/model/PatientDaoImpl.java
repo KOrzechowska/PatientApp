@@ -1,5 +1,6 @@
 package eu.telm.model;
 
+import eu.telm.controller.AuditLogInterceptor;
 import eu.telm.dataBase.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
@@ -56,7 +57,9 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Long save(Patient e) {
-        Session session = this.sessionFactory.openSession();
+        AuditLogInterceptor interceptor = new AuditLogInterceptor();
+        Session session = this.sessionFactory.withOptions().interceptor(interceptor).openSession();
+        interceptor.setSession(session);
         session.beginTransaction();
         session.save(e);
         session.getTransaction().commit();

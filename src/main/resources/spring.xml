@@ -22,7 +22,11 @@
                 <value>eu.telm.model.Patient</value>
                 <value>eu.telm.model.Realizacje</value>
                 <value>eu.telm.model.Operacja</value>
+                <value>eu.telm.model.AuditLog</value>
             </list>
+        </property>
+        <property name="entityInterceptor">
+            <bean class="eu.telm.controller.AuditLogInterceptor"></bean>
         </property>
   <property name="hibernateProperties">
     <props>
@@ -33,6 +37,7 @@
     </props>
 </property>
 </bean>
+
     <bean id="userDao" class="eu.telm.model.UserDaoImpl">
         <property name="sessionFactory" ref="hibernate4AnnotatedSessionFactory" />
     </bean>

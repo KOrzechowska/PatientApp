@@ -27,8 +27,6 @@ public class OperacjeDaoImpl implements OperacjeDao {
         List<Operacja> operacjas = session.createQuery("from Operacja").list();
         for(Operacja operacja : operacjas) {
             System.out.println("Imie\t" + operacja.getNazwa() + " nazwisko\t"+operacja.getTyp()+"\t"+operacja.getOpis());
-            //if(operacja.getRealizacjeList().size()>0)
-                //System.out.println("badanie\t"+operacja.getRealizacjeList().get(0).getPatient().getImie());
         }
         System.out.println("Robić" + operacjas.size());
         session.close();

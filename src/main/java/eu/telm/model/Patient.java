@@ -1,5 +1,7 @@
 package eu.telm.model;
 
+import eu.telm.view.SimpleLoginView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -10,7 +12,7 @@ import java.util.List;
  */
 @Entity
 @Table(name = "pacjenci")
-public class Patient  {
+public class Patient  implements IAuditLog{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "patient_id", unique = true, nullable = false)
@@ -45,8 +47,31 @@ public class Patient  {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     private List<Realizacje> realizacjeList;
 
+
     public Long getId() {
         return id;
+    }
+
+    @Transient
+    @Override
+    public Long getIdToLog() {
+        return getId();
+    }
+
+    @Transient
+    @Override
+    public String getLogDeatil(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Id : ").append(getId())
+                .append(" Nazwisko : ").append(nazwisko)
+                .append(" UserName Name : ").append(SimpleLoginView.currentUser.getUsername());
+
+        return sb.toString();
+    }
+    @Transient
+    @Override
+    public String getCreatedBy() {
+        return SimpleLoginView.currentUser.getUsername();
     }
 
     public void setId(Long id) {

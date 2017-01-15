@@ -1,5 +1,7 @@
 package eu.telm.dataBase;
 
+import eu.telm.controller.AuditLogInterceptor;
+import eu.telm.model.AuditLog;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -15,6 +17,7 @@ public class HibernateUtil {
         if (sessionFactory == null) {
             // loads configuration and mappings
             Configuration configuration = new Configuration().configure();
+            configuration.addAnnotatedClass(AuditLog.class);
             ServiceRegistry serviceRegistry
                     = new StandardServiceRegistryBuilder()
                     .applySettings(configuration.getProperties()).build();

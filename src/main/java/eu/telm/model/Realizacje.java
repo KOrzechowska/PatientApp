@@ -1,5 +1,7 @@
 package eu.telm.model;
 
+import eu.telm.view.SimpleLoginView;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -9,7 +11,7 @@ import java.util.Date;
  */
 @Entity
 @Table(name = "realizacje")
-public class Realizacje {
+public class Realizacje implements IAuditLog{
 
     @Id
     @Column(name = "realizacje_id")
@@ -77,5 +79,26 @@ public class Realizacje {
 
     public void setPatient(Patient patient) {
         this.patient = patient;
+    }
+
+    @Transient
+    @Override
+    public Long getIdToLog() {
+        return getId();
+    }
+
+    @Transient
+    @Override
+    public String getLogDeatil(){
+        StringBuilder sb = new StringBuilder();
+        sb.append("Id : ").append(getId())
+                .append(" Id Pacjenta : ").append(getPatient().getId());
+
+        return sb.toString();
+    }
+    @Transient
+    @Override
+    public String getCreatedBy() {
+        return SimpleLoginView.currentUser.getUsername();
     }
 }
