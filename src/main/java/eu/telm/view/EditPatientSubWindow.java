@@ -91,17 +91,31 @@ public class EditPatientSubWindow extends Window {
             return 1;
 
     }
-    
+
+    public boolean isNOTNumber(String s){
+        int x;
+        try{
+        x=Integer.parseInt(s);}
+        catch (Exception e){
+            Notification.show("Popraw pesel.");
+            return true;
+        }
+
+        if (x==1||x==2||x==3||x==4||x==5||x==6||x==7||x==8||x==9||x==0)
+            return false;
+        else
+            return true;
+    }
+
     public int sprawdz(String a){
         int Pesel[]=new int[11];
         int[] wagi= {1, 3, 7, 9, 2, 3, 7, 9, 1, 3};
         if(a.length()!=11)
             return 0;
-        for(int i=0; i<10; i++)
+       for(int i=0; i<10; i++)
         {
-            Pesel[i]=Integer.parseInt(a.substring(i,i+1)); //na pozniej
-            if (Pesel[i]!=0 ||Pesel[i]!=1 ||Pesel[i]!=2||Pesel[i]!=3||Pesel[i]!=4||Pesel[i]!=5
-                    ||Pesel[i]!=6||Pesel[i]!=7||Pesel[i]!=8||Pesel[i]!=9){
+           // Pesel[i]=Integer.parseInt(a.substring(i,i+1));
+            if (isNOTNumber(a.substring(i,i+1))){
                 return 0;
             }
         }
@@ -110,7 +124,15 @@ public class EditPatientSubWindow extends Window {
         {
             suma+=Integer.parseInt(a.substring(i, i+1))*wagi[i]; //do cyfry kontrolnej
         }
-        int cyfraKontrolna = Integer.parseInt(a.substring(10,11));
+        int cyfraKontrolna;
+        try{
+             cyfraKontrolna = Integer.parseInt(a.substring(10,11));
+        }
+        catch(Exception e){
+            Notification.show("Popraw pesel.");
+            return 0;
+
+        }
         suma%=10;
         suma=10-suma;
         suma%=10;
