@@ -64,7 +64,8 @@ public class PatientController implements Button.ClickListener{
         model.setPlec(editWindow.getPlec().getValue());
         model.setEmail(editWindow.getEmail().getValue());
         model.setNrTel(editWindow.getTel().getValue());
-      //  model.setDataUr((java.sql.Date)(editWindow.getBirthDate().getValue()));
+        model.setDataUr(editWindow.getBirthDate().getValue());
+        System.out.println("Data ur z updateP:\t"+model.getDataUr());
         model.setUlica(editWindow.getUlica().getValue());
         model.setMiasto(editWindow.getMiasto().getValue());
         model.setNrDomu(editWindow.getNumer().getValue());
