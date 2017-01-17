@@ -43,11 +43,14 @@ public class DefaultView extends VerticalLayout implements View {
     private Patient patient;
     private PatientController patientController;
     private TestController testController;
+    private AddTestSubWindow subWindowAddTreatment;
+    private TestController treatmentController;
     private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
-    private Button dodajBadanie;
+    private Button dodajBadanie, dodajZabieg;
     private CheckBox isInsured;
+    private Boolean isPressedBadania=false, isPressedZabiegi=false;
 
 
     private EditPatientSubWindow editWindow;
@@ -70,6 +73,11 @@ public class DefaultView extends VerticalLayout implements View {
         subWindowAddTest.setHeight("80%");
         subWindowAddTest.center();
         testController = new TestController(subWindowAddTest, patient,this);
+        subWindowAddTreatment = new AddTestSubWindow();
+        subWindowAddTreatment.setWidth("80%");
+        subWindowAddTreatment.setHeight("80%");
+        subWindowAddTreatment.center();
+        treatmentController = new TestController(subWindowAddTreatment, patient,this);
         editWindow.setWidth("80%");
         editWindow.setHeight("80%");
         editWindow.center();
@@ -173,7 +181,8 @@ public class DefaultView extends VerticalLayout implements View {
                 ui.addWindow(subWindowAddTest);
                 subWindowAddTest.setClickController(testController);
                 System.out.println("PACJENT\t"+patient.getImie()+patient.getId());
-                testController.fillComboBox();
+                isPressedBadania=true;
+                testController.fillComboBox(true,false);
                 testController.setModel(patient);
                 testController.setTabela(tabelaBadan);
                 testController.fillAddWindow();
@@ -187,9 +196,11 @@ public class DefaultView extends VerticalLayout implements View {
                 testController.setTabela(tabelaBadan);
                 if(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString()==null
                         ||tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString().isEmpty()) {
+                    subWindowAddTest.setCaption("Dodaj wynik badania");
                     ui.addWindow(subWindowAddTest);
                     subWindowAddTest.setClickController(testController);
-                    testController.fillComboBox();
+                    isPressedBadania=true;
+                    testController.fillComboBox(true,false);
                     testController.fillAddResultWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
                 }
                 else
@@ -219,9 +230,68 @@ public class DefaultView extends VerticalLayout implements View {
         Button usunZabieg = ButtonFactory.createButton("Usuń", FontAwesome.TRASH, buttonListZabieg, "deleteButton");
         Button edytujZabieg = ButtonFactory.createButton("Edytuj", FontAwesome.EDIT, buttonListZabieg, "editButton");
         Button dodajWynikZabieg = ButtonFactory.createButton("Dodaj wynik", FontAwesome.BAR_CHART, buttonListZabieg, "addResultButton");
-        Button dodajZabieg = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, buttonListZabieg, "addButton");
-        ButtonFactory.setEnabledButtons(buttonListZabieg, 3, false);
+        dodajZabieg = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, buttonListZabieg, "addButton");
+        ButtonFactory.setEnabledButtons(buttonListZabieg, 4, false);
         form.addComponent(RowFactory.createRowLayout(buttonListZabieg, "rowOfButtons"));
+
+        dodajZabieg.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent clickEvent) {
+                subWindowAddTreatment.setCaption("Dodaj zabieg");
+                ui.addWindow(subWindowAddTreatment);
+                subWindowAddTreatment.setClickController(treatmentController);
+                System.out.println("PACJENT\t"+patient.getImie()+patient.getId());
+                isPressedZabiegi=true;
+                treatmentController.fillComboBox(false,true);
+                treatmentController.setModel(patient);
+                treatmentController.setTabela(tabelaZabiegow);
+                treatmentController.fillAddWindow();
+            }
+        });
+
+        dodajWynikZabieg.addClickListener(e->{
+            Object selected = ((Grid.SingleSelectionModel)
+                    tabelaZabiegow.getSelectionModel()).getSelectedRow();
+            if(selected!=null){
+                treatmentController.setTabela(tabelaZabiegow);
+                if(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString()==null
+                        ||tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString().isEmpty()) {
+                    subWindowAddTreatment.setCaption("Dodaj wynik zabiegu");
+                    ui.addWindow(subWindowAddTreatment);
+                    subWindowAddTreatment.setClickController(treatmentController);
+                    isPressedZabiegi=true;
+                    treatmentController.fillComboBox(false,true);
+                    treatmentController.fillAddResultWindow(Long.parseLong(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                }
+                else
+                    Notification.show("Badanie ma już dodany wynik. Mozna je tylko edytować.");
+
+            }
+        });
+
+        edytujZabieg.addClickListener(e->{
+            Object selected = ((Grid.SingleSelectionModel)
+                    tabelaZabiegow.getSelectionModel()).getSelectedRow();
+            if (selected != null) {
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                subWindowAddTreatment.setCaption("Edytuj zabieg");
+                ui.addWindow(subWindowAddTreatment);
+                subWindowAddTreatment.setClickController(treatmentController);
+                isPressedZabiegi=true;
+                treatmentController.fillComboBox(false,true);
+                treatmentController.setTabela(tabelaZabiegow);
+                Realizacje realizacje = new Realizacje();
+                realizacje.setId(Long.parseLong(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("id").toString()));
+                try {
+                    realizacje.setData(formatter.parse(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("data").toString()));
+                } catch (ParseException e1) {
+                    e1.printStackTrace();
+                }
+                realizacje.setWynik(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString());
+                realizacje.setUwagi(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("uwagi").toString());
+                treatmentController.fillWindow(Long.parseLong(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+            }
+        });
 
 
         tabelaBadan.addSelectionListener(e -> {
@@ -241,9 +311,11 @@ public class DefaultView extends VerticalLayout implements View {
                     tabelaBadan.getSelectionModel()).getSelectedRow();
             if (selected != null) {
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                subWindowAddTest.setCaption("Edytuj badanie");
                 ui.addWindow(subWindowAddTest);
                 subWindowAddTest.setClickController(testController);
-                testController.fillComboBox();
+                isPressedBadania=true;
+                testController.fillComboBox(true,false);
                 testController.setTabela(tabelaBadan);
                 Realizacje realizacje = new Realizacje();
                 realizacje.setId(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()));
@@ -404,6 +476,15 @@ public class DefaultView extends VerticalLayout implements View {
     public BadaniaDao getBadaniaDao(){return badaniaDao;}
     public OperacjeDao getOperacjeDao(){return operacjeDao;}
     public Button getDodajBadanieButton() {return dodajBadanie;}
+    public Button getDodajZabiegButton() {return dodajZabieg;}
+    public Boolean getPressedBadania() {return isPressedBadania;}
+    public Boolean getPressedZabiegi() {return isPressedZabiegi;}
+    public void setPressedBadania(Boolean badania) {
+        this.isPressedBadania = badania;
+    }
+    public void setPressedZabiegi(Boolean zabiegi) {
+        this.isPressedZabiegi = zabiegi;
+    }
 
     @Override
     public void enter(ViewChangeListener.ViewChangeEvent event) {

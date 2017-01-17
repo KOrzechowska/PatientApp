@@ -121,6 +121,7 @@ public class PatientController implements Button.ClickListener{
             addWindow.close();
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
+            defaultView.getDodajZabiegButton().setEnabled(true);
             defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
             System.out.println("ID\t"+model.getId());
             defaultView.setPatient(model);}
@@ -154,6 +155,7 @@ public class PatientController implements Button.ClickListener{
             //System.out.println(model.getId());
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
+            defaultView.getDodajZabiegButton().setEnabled(true);
             defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
 
         }

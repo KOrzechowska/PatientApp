@@ -32,7 +32,9 @@ public class AddTestSubWindow extends Window {
         mainLayout.setMargin(true);
         List<Component> textFields = new ArrayList<>();
         nameComboBox = TextFieldFactory.createComboBox("Nazwa", true, textFields);
+        nameComboBox.setRequired(true);
         dateField = TextFieldFactory.createDateField("Data", true, textFields);
+        dateField.setRequired(true);
         resultTextField = TextFieldFactory.createTextField("Wynik", false, textFields);
         resultTextField.setHeight("60");
         commentsTextField = TextFieldFactory.createTextField("Uwagi", false, textFields);

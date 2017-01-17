@@ -31,6 +31,7 @@ public class TestController implements Button.ClickListener {
     private Grid tabela;
     private BadaniaDao badaniaDao;
     private OperacjeDao operacjeDao;
+    private List<String> operacjeByTyp;
 
     public TestController(AddTestSubWindow subWindowAddTest, Patient model , DefaultView defaultView){
         this. subWindowAddTest = subWindowAddTest;
@@ -48,7 +49,7 @@ public class TestController implements Button.ClickListener {
         if (editting){
             if(source == subWindowAddTest.getAddTestButton()){
                 if(subWindowAddTest.getNameComboBox().isEmpty()||subWindowAddTest.getDateField().isEmpty())
-                    Notification.show("Aby dodać badanie wymagana jest data oraz nazwa badania.");
+                    Notification.show("Aby zapisać zmiany wymagana jest nazwa oraz data");
                 realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
                 realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
                 realizacje.setData(subWindowAddTest.getDateField().getValue());
@@ -57,7 +58,14 @@ public class TestController implements Button.ClickListener {
                 realizacje.setOperacja(operacja);
                 BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
                 badaniaDao.update(realizacje);
-                fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
+                if(defaultView.getPressedBadania()) {
+                    fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
+                    defaultView.setPressedBadania(false);
+                }
+                if(defaultView.getPressedZabiegi()) {
+                    fillTableZabiegi(tabela, badaniaDao, realizacje.getPatient().getId());
+                    defaultView.setPressedZabiegi(false);
+                }
                 subWindowAddTest.close();
                 editting=false;
             }
@@ -66,7 +74,7 @@ public class TestController implements Button.ClickListener {
             if(source == subWindowAddTest.getAddTestButton()){
                 Realizacje real = new Realizacje();
                 if(subWindowAddTest.getNameComboBox().isEmpty()||subWindowAddTest.getDateField().isEmpty())
-                    Notification.show("Aby dodać badanie wymagana jest data oraz nazwa badania.");
+                    Notification.show("Aby zapisać zmiany wymagana jest nazwa oraz data.");
                 else {
                     real.setData(subWindowAddTest.getDateField().getValue());
                     real.setPatient(model);
@@ -76,7 +84,14 @@ public class TestController implements Button.ClickListener {
                     real.setOperacja(operacja);
                     BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
                     badaniaDao.save(real);
-                    fillTable(tabela, badaniaDao, real.getPatient().getId());
+                    if(defaultView.getPressedBadania()) {
+                        fillTable(tabela, badaniaDao, real.getPatient().getId());
+                        defaultView.setPressedBadania(false);
+                    }
+                    if(defaultView.getPressedZabiegi()) {
+                        fillTableZabiegi(tabela, badaniaDao, real.getPatient().getId());
+                        defaultView.setPressedZabiegi(false);
+                    }
                     subWindowAddTest.close();
                     add=false;
                 }
@@ -91,16 +106,26 @@ public class TestController implements Button.ClickListener {
                     realizacje.setUwagi(subWindowAddTest.getCommentsTextField().getValue());
                     realizacje.setWynik(subWindowAddTest.getResultTextField().getValue());
                     badaniaDao.update(realizacje);
-                    fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
+                    if(defaultView.getPressedBadania()) {
+                        fillTable(tabela, badaniaDao, realizacje.getPatient().getId());
+                        defaultView.setPressedBadania(false);
+                    }
+                    if(defaultView.getPressedZabiegi()) {
+                        fillTableZabiegi(tabela, badaniaDao, realizacje.getPatient().getId());
+                        defaultView.setPressedZabiegi(false);
+                    }
                     subWindowAddTest.close();
                     addResult = false;
                 }
             }
         }
     }
-    public void fillComboBox(){
+    public void fillComboBox(Boolean badania, Boolean zabiegi){
         OperacjeDao operacjeDao = (OperacjeDao) DefaultView.context.getBean("operacjeDao");
-        List<String> operacjeByTyp = operacjeDao.getOperacjeByTyp(Operacja.typ.BADANIE);
+        if(badania)
+            operacjeByTyp = operacjeDao.getOperacjeByTyp(Operacja.typ.BADANIE);
+        if(zabiegi)
+            operacjeByTyp = operacjeDao.getOperacjeByTyp(Operacja.typ.ZABIEG);
         subWindowAddTest.getNameComboBox().addItems(operacjeByTyp);
     }
 
@@ -162,6 +187,21 @@ public class TestController implements Button.ClickListener {
         tabelaBadan.getContainerDataSource().removeAllItems();
         for(Object[] objects : realizacjeTable)
             tabelaBadan.addRow(objects);
+
+    }
+
+    public void fillTableZabiegi(Grid tabelaZabiegow, BadaniaDao badaniaDao, long id){
+        DateFormat writeFormat = new SimpleDateFormat( "yyyy-MM-dd");
+        List<Realizacje> realizacjeList = badaniaDao.findByPatient_Id(id);
+        List<Object[]> realizacjeTable = new ArrayList<>();
+        for(Realizacje realizacje : realizacjeList){
+            if(realizacje.getOperacja().getTyp()== Operacja.typ.ZABIEG)
+                realizacjeTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
+                        writeFormat.format(realizacje.getData()), realizacje.getWynik(), realizacje.getUwagi(),realizacje.getId()});
+        }
+        tabelaZabiegow.getContainerDataSource().removeAllItems();
+        for(Object[] objects : realizacjeTable)
+            tabelaZabiegow.addRow(objects);
 
     }
 
