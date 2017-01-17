@@ -39,6 +39,7 @@ public class SearchPatientSubWindow extends Window {
         VerticalLayout mainLayout = new VerticalLayout(actions, grid);
         setContent(mainLayout);
         createNewPatientButton = ButtonFactory.createButton("Dodaj Pacjenta", FontAwesome.USER_PLUS, "addButton");
+        createNewPatientButton.setVisible(false);
         mainLayout.addComponent(createNewPatientButton);
         // Configure layouts and components
         actions.setSpacing(true);
@@ -82,9 +83,11 @@ public class SearchPatientSubWindow extends Window {
     private void listCustomers(String text) {
 
         if (StringUtils.isEmpty(text)) {
+            createNewPatientButton.setVisible(false);
             grid.setContainerDataSource(
                     new BeanItemContainer(Patient.class, repo.getAll()));
         } else {
+            createNewPatientButton.setVisible(true);
             grid.setContainerDataSource(new BeanItemContainer(Patient.class,
                     repo.findByNazwiskoStartsWithIgnoreCase(text)));
         }
