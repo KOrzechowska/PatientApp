@@ -1,12 +1,14 @@
 package eu.telm.view;
 
 import com.vaadin.data.validator.*;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import eu.telm.model.Patient;
 import eu.telm.util.ButtonFactory;
 import eu.telm.util.RowFactory;
 import eu.telm.util.TextFieldFactory;
+import eu.telm.util.Validator;
 
 import javax.xml.bind.ValidationEvent;
 import java.util.Date;
@@ -145,6 +147,9 @@ public class EditPatientSubWindow extends Window {
     public void setClickController(Button.ClickListener ac){
         this.save.addClickListener(ac);
         this.cancel.addClickListener(ac);
+    }
+    public void setFocusController(FieldEvents.BlurListener focusListener){
+        this.pesel.addListener(focusListener);
     }
 
     public void ustawImie(String a) {

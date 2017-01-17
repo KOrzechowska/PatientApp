@@ -1,24 +1,30 @@
 package eu.telm.controller;
 
 import com.vaadin.data.util.BeanItemContainer;
+import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import eu.telm.model.BadaniaDao;
 import eu.telm.model.PatientDao;
 import eu.telm.model.Realizacje;
 import eu.telm.model.Patient;
+import eu.telm.util.Validator;
 import eu.telm.view.DefaultView;
 import eu.telm.view.SearchPatientSubWindow;
 import eu.telm.view.EditPatientSubWindow;
 
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
  * Created by kasia on 13.11.16.
  */
-public class PatientController implements Button.ClickListener{
+public class PatientController implements Button.ClickListener, FieldEvents.BlurListener{
     private SearchPatientSubWindow subWindow;
     private DefaultView defaultView;
     private Patient model;
@@ -186,6 +192,7 @@ public class PatientController implements Button.ClickListener{
             model = new Patient();
             addWindow = new EditPatientSubWindow(model);
             addWindow.setCaption("Dodaj nowego pacjenta");
+            addWindow.setFocusController(this);
             ui.addWindow(addWindow);
             subWindow.close();
             addWindow.cancel.addClickListener(new Button.ClickListener() {
@@ -207,5 +214,30 @@ public class PatientController implements Button.ClickListener{
 
     public void setModel(Patient model) {
         this.model = model;
+    }
+
+
+    @Override
+    public void blur(FieldEvents.BlurEvent blurEvent) {
+        if(editWindow!=null)
+        if(blurEvent.getSource()==editWindow.getPesel()) {
+            fillSexAndBirthDate(editWindow);
+        }
+        if(addWindow!=null)
+        if(blurEvent.getSource()==addWindow.getPesel()) {
+            fillSexAndBirthDate(addWindow);
+        }
+    }
+
+    private void fillSexAndBirthDate(EditPatientSubWindow window){
+        Validator validator = new Validator(window.getPesel().getValue());
+        if (validator.isValid()) {
+            DateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd");
+            System.out.println("rok z pesel\t" + validator.getBirthYear() + validator.getBirthDay() + validator.getBirthMonth());
+            java.util.Date date = new GregorianCalendar(validator.getBirthYear(), validator.getBirthMonth()-1, validator.getBirthDay()).getTime();
+            System.out.println("data z pesel\t" + date + "\tplec\t" + validator.getSex() + "\tdata\t" + writeFormat.format(date));
+            window.getBirthDate().setValue(date);
+            window.getPlec().setValue(validator.getSex());
+        }
     }
 }
