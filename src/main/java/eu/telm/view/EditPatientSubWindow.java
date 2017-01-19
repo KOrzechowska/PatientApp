@@ -83,8 +83,9 @@ public class EditPatientSubWindow extends Window {
      //   imie.setInvalidAllowed(false);
     }
 
+
     public int Waliduj(){
-        if (sprawdz(pesel.getValue())!=1){
+        if (sprawdz2(pesel.getValue())!=1){
             return 2;
         }
 
@@ -112,6 +113,13 @@ public class EditPatientSubWindow extends Window {
             return true;
     }
 
+    public int sprawdz2(String pesel){
+        Validator validator = new Validator(pesel);
+        if(validator.isValid())
+            return 1;
+        else
+            return 0;
+    }
     public int sprawdz(String a){
         int Pesel[]=new int[11];
         int[] wagi= {1, 3, 7, 9, 2, 3, 7, 9, 1, 3};
