@@ -50,7 +50,7 @@ public class SearchPatientSubWindow extends Window {
         grid.setWidth(100,Unit.PERCENTAGE);
         grid.setColumns("id", "nazwisko", "imie", "pesel", "email");
 
-        filter.setInputPrompt("Filter by email");
+        filter.setInputPrompt("Nazwisko");
 
         // Hook logic to components
 

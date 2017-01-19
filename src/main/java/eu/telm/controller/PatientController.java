@@ -119,18 +119,22 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             addWindow.close();
         }
         if (source == addWindow.getSave()) {
-            updateNewPatient();
-            defaultView.fillPatientPanel(model);
-            if (addWindow.Waliduj()==0){
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
-            model.setId(patientDao.save(model));
-            addWindow.close();
-            BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
-            defaultView.getDodajBadanieButton().setEnabled(true);
-            defaultView.getDodajZabiegButton().setEnabled(true);
-            defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao,model.getId());
-            System.out.println("ID\t"+model.getId());
-            defaultView.setPatient(model);}
+            if (addWindow.Waliduj()==0){
+                if(patientDao.check(addWindow.getPesel().getValue())) {
+                    updateNewPatient();
+                    defaultView.fillPatientPanel(model);
+                    model.setId(patientDao.save(model));
+                    addWindow.close();
+                    BadaniaDao badaniaDao = (BadaniaDao) DefaultView.context.getBean("badaniaDao");
+                    defaultView.getDodajBadanieButton().setEnabled(true);
+                    defaultView.getDodajZabiegButton().setEnabled(true);
+                    defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao, model.getId());
+                    System.out.println("ID\t" + model.getId());
+                    defaultView.setPatient(model);
+                }else
+                    Notification.show("Pacjent o numerze pesel: "+addWindow.getPesel()+ " już istnieje w bazie");
+            }
 
             if (addWindow.Waliduj()==1){
                 Notification.show("Wpisz brakujące dane");
@@ -171,12 +175,12 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             editWindow.close();
         }
         if (source == editWindow.getSave()){
-            updateEdittedPatient();
-            defaultView.fillPatientPanel(model);
             if (editWindow.Waliduj()==0){
-            PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
-            patientDao.update(model);
-            editWindow.close();
+                PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
+                updateEdittedPatient();
+                defaultView.fillPatientPanel(model);
+                patientDao.update(model);
+                editWindow.close();
             }
             if(editWindow.Waliduj()==1){
                 Notification.show("Wpisz brakujace dane");

@@ -98,6 +98,7 @@ public class DefaultView extends VerticalLayout implements View {
         tf2 = TextFieldFactory.createTextField("Nazwisko", false, textFields);
         tf3 = TextFieldFactory.createTextField("Pesel", false, textFields);
         dateField = TextFieldFactory.createDateField("Data urodzenia", false, textFields);
+        dateField.clear();
         tf5 = TextFieldFactory.createTextField("Płeć", false, textFields);
         tf6 = TextFieldFactory.createTextField("Ulica", false, textFields);
         tf7 = TextFieldFactory.createTextField("Miasto", false, textFields);

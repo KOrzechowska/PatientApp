@@ -91,5 +91,30 @@ public class PatientDaoImpl implements PatientDao {
 
     }
 
+    @Override
+    public boolean check(String pesel){
+        Boolean check=false;
+        if(pesel.isEmpty()||pesel==null) {
+            System.out.print("Obcokrajowiec");
+            check=true;
+        }
+        else {
+            Session session = this.sessionFactory.openSession();
+            Criteria criteria = session.createCriteria(Patient.class);
+            criteria.add(Restrictions.ilike("pesel", pesel, MatchMode.START));
+            List<Patient> patients = criteria.list();
+            for (Patient patient : patients) {
+                System.out.println("Patient:\t" + patient.getImie() + "\t" + patient.getNazwisko() + "\t" + patient.getPesel());
+                System.out.print("Pacjent jest w bazie");
+            }
+            session.close();
+            if (patients.isEmpty())
+                check=true;
+            else
+                check=false;
+        }
+        return  check;
+    }
+
 
 }

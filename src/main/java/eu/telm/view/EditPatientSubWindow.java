@@ -42,6 +42,8 @@ public class EditPatientSubWindow extends Window {
         setIcon(FontAwesome.USERS);
         center();
         setModal(true);
+        setWidth("80%");
+        setHeight("80%");
 
         VerticalLayout patientData = new VerticalLayout();
         List<HorizontalLayout> horizontalLayouts = new ArrayList<>();
