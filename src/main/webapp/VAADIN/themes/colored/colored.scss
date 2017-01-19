@@ -97,7 +97,7 @@
         font-size: 20px;
       }
 
-            .rowOfButtons .v-button-deleteButton{
+            .rowOfButtons .v-button-deleteButton, .rowOfButtonsPatientPanel .v-button-deleteButton{
                 background-image: none;
                 background-color: #f00; !important;
             }
@@ -105,7 +105,7 @@
                 background-image: none;
                 background-color: #cc33ff; !important;
             }
-            .rowOfButtons .v-button-addResultButton{
+            .rowOfButtons .v-button-addResultButton, .rowOfButtonsPatientPanel .v-button-addResultButton{
                 background-image: none;
                 background-color: #4a89dc; !important;
             }

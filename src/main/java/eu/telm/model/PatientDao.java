@@ -2,6 +2,7 @@ package eu.telm.model;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -10,6 +11,8 @@ import java.util.List;
 public interface PatientDao {
     List<Patient> findByNazwisko(String nazwisko);
     List<Patient> findByNazwiskoStartsWithIgnoreCase(String nazwisko);
+
+    List<Patient> findByCriteriums(String imie, String nazwisko, Date date);
 
     public List<Patient> getAll();
     public Long save(Patient p);

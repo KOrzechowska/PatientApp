@@ -9,6 +9,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -33,6 +34,25 @@ public class PatientDaoImpl implements PatientDao {
         Session session = this.sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Patient.class);
         criteria.add(Restrictions.ilike("nazwisko",nazwisko, MatchMode.START));
+        List<Patient> patients = criteria.list();
+        for(Patient patient : patients){
+            System.out.println("Patient:\t"+patient.getImie()+"\t"+patient.getNazwisko()+"\t"+patient.getPesel());
+        }
+        session.close();
+        return patients;
+    }
+
+    @Override
+    public List<Patient> findByCriteriums(String imie, String nazwisko, Date date) {
+        Session session = this.sessionFactory.openSession();
+        Criteria criteria = session.createCriteria(Patient.class);
+        if(!nazwisko.isEmpty())
+            criteria.add(Restrictions.ilike("nazwisko",nazwisko, MatchMode.START));
+        if(!imie.isEmpty())
+            criteria.add(Restrictions.ilike("imie",imie, MatchMode.START));
+        if(date != null) {
+            criteria.add(Restrictions.eq("dataUr", date));
+        }
         List<Patient> patients = criteria.list();
         for(Patient patient : patients){
             System.out.println("Patient:\t"+patient.getImie()+"\t"+patient.getNazwisko()+"\t"+patient.getPesel());
