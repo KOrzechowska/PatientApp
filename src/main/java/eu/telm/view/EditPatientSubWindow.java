@@ -50,6 +50,7 @@ public class EditPatientSubWindow extends Window {
         nazwisko = TextFieldFactory.createTextField("Nazwisko", true, textFields);
         pesel = TextFieldFactory.createTextField("Pesel", true, textFields);
         birthDate = TextFieldFactory.createDateField("Data urodzenia", true, textFields);
+        birthDate.setRangeEnd(new Date()); // daty wszystkie do dziś
         plec = TextFieldFactory.createTextField("Płeć", true, textFields);
         ulica = TextFieldFactory.createTextField("Ulica", true, textFields);
         miasto = TextFieldFactory.createTextField("Miasto", true, textFields);

@@ -27,8 +27,6 @@ public class TextFieldFactory {
     public static DateField createDateField(String label, boolean enabled, List<Component> components){
         DateField dateField = new DateField(label);
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.UK);
-        java.util.Date date = new java.util.Date();
-        dateField.setValue(date);
         dateField.setStyleName("myTextField");
         dateField.setDateFormat("yyyy-MM-dd");
         dateField.setEnabled(enabled);

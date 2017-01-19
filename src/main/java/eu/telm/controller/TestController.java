@@ -159,6 +159,8 @@ public class TestController implements Button.ClickListener {
         subWindowAddTest.getResultTextField().clear();
         subWindowAddTest.getCommentsTextField().clear();
         subWindowAddTest.getDateField().setValue(new java.util.Date());
+        subWindowAddTest.getDateField().setRangeStart(new java.util.Date()); // daty od dziś do przodu
+        subWindowAddTest.getDateField().setDateOutOfRangeMessage("Możesz ustawić wizytę tylko na date do przodu");
         add = true;
     }
 
