@@ -27,7 +27,7 @@ public class SiteUI extends UI {
         setTheme("colored");
         final VerticalLayout root = new VerticalLayout();
         root.setSizeFull();
-        root.setMargin(true);
+        root.setMargin(false);
         root.setSpacing(true);
         setContent(root);
 
