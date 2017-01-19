@@ -1,5 +1,9 @@
 package eu.telm.util;
 
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
+import com.vaadin.ui.TextField;
+
 /**
  * Created by kasia on 17.01.17.
  */
@@ -10,18 +14,20 @@ public class Validator {
     private boolean valid = false;
 
     public Validator(String PESELNumber) {
-        if (PESELNumber.length() != 11){
-            valid = false;
-        }
+        if (PESELNumber==null||PESELNumber.isEmpty())
+             valid=true;
         else {
-            for (int i = 0; i < 11; i++){
-                PESEL[i] = Byte.parseByte(PESELNumber.substring(i, i+1));
-            }
-            if (checkSum() && checkMonth() && checkDay()) {
-                valid = true;
-            }
-            else {
+            if (PESELNumber.length() != 11) {
                 valid = false;
+            } else {
+                for (int i = 0; i < 11; i++) {
+                    PESEL[i] = Byte.parseByte(PESELNumber.substring(i, i + 1));
+                }
+                if (checkSum() && checkMonth() && checkDay()) {
+                    valid = true;
+                } else {
+                    valid = false;
+                }
             }
         }
     }
@@ -155,6 +161,13 @@ public class Validator {
 
     private boolean leapYear(int year) {
         if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0)
+            return true;
+        else
+            return false;
+    }
+
+    public boolean WalidujWymagane (TextField imie, TextField nazwisko, DateField data, ComboBox plec){
+        if (imie.isValid() && nazwisko.isValid()&& data.isValid()&&plec.isValid())
             return true;
         else
             return false;

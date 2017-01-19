@@ -204,6 +204,7 @@ public class DefaultView extends VerticalLayout implements View {
                     isPressedBadania=true;
                     testController.fillComboBox(true,false);
                     testController.fillAddResultWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                    ButtonFactory.setEnabledButtons(buttonListBadanie, 3, false);
                 }
                 else
                     Notification.show("Badanie ma już dodany wynik. Mozna je tylko edytować.");
@@ -264,6 +265,7 @@ public class DefaultView extends VerticalLayout implements View {
                     isPressedZabiegi=true;
                     treatmentController.fillComboBox(false,true);
                     treatmentController.fillAddResultWindow(Long.parseLong(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                    ButtonFactory.setEnabledButtons(buttonListZabieg, 3, false);
                 }
                 else
                     Notification.show("Badanie ma już dodany wynik. Mozna je tylko edytować.");
@@ -292,6 +294,7 @@ public class DefaultView extends VerticalLayout implements View {
                 realizacje.setWynik(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString());
                 realizacje.setUwagi(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("uwagi").toString());
                 treatmentController.fillWindow(Long.parseLong(tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaZabiegow.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                ButtonFactory.setEnabledButtons(buttonListZabieg, 3, false);
             }
         });
 
@@ -329,6 +332,7 @@ public class DefaultView extends VerticalLayout implements View {
                 realizacje.setWynik(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("wynik").toString());
                 realizacje.setUwagi(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("uwagi").toString());
                 testController.fillWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
+                ButtonFactory.setEnabledButtons(buttonListBadanie, 3, false);
             }
 
         });

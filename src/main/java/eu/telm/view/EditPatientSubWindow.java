@@ -10,7 +10,9 @@ import eu.telm.util.RowFactory;
 import eu.telm.util.TextFieldFactory;
 import eu.telm.util.Validator;
 
+import javax.swing.text.MaskFormatter;
 import javax.xml.bind.ValidationEvent;
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +28,7 @@ public class EditPatientSubWindow extends Window {
     private TextField pesel;
     private TextField email;
     private DateField birthDate;
-    private TextField plec;
+    private ComboBox plec;
     private TextField ulica;
     private TextField miasto;
     private TextField numer;
@@ -53,7 +55,9 @@ public class EditPatientSubWindow extends Window {
         pesel = TextFieldFactory.createTextField("Pesel", true, textFields);
         birthDate = TextFieldFactory.createDateField("Data urodzenia", true, textFields);
         birthDate.setRangeEnd(new Date()); // daty wszystkie do dziś
-        plec = TextFieldFactory.createTextField("Płeć", true, textFields);
+        plec = TextFieldFactory.createComboBox("Płeć", true, textFields);
+        plec.addItem("Kobieta");
+        plec.addItem("Mezczyzna");
         ulica = TextFieldFactory.createTextField("Ulica", true, textFields);
         miasto = TextFieldFactory.createTextField("Miasto", true, textFields);
         numer = TextFieldFactory.createTextField("Numer domu", true, textFields);
@@ -76,15 +80,15 @@ public class EditPatientSubWindow extends Window {
         nazwisko.setRequired(true);
 
 
-        pesel.addValidator(new StringLengthValidator("Podaj PESEL", 11, 11, false));
-        pesel.setRequired(true);
-
-
-     //   imie.setInvalidAllowed(false);
+        //pesel.addValidator(new StringLengthValidator("Podaj PESEL", 11, 11, false));
+        //pesel.setRequired(true);
+        pesel.addValidator(new RegexpValidator("[-]?[0-9]*\\.?,?[0-9]+", "Tylko cyfy"));
+        plec.setRequired(true);
+        birthDate.setRequired(true);
     }
 
 
-    public int Waliduj(){
+    /*public int Waliduj(){
         if (sprawdz2(pesel.getValue())!=1){
             return 2;
         }
@@ -153,7 +157,7 @@ public class EditPatientSubWindow extends Window {
             return 1;
         else
             return 0;
-    }
+    }*/
 
     public void setClickController(Button.ClickListener ac){
         this.save.addClickListener(ac);
@@ -218,7 +222,7 @@ public class EditPatientSubWindow extends Window {
         patient.setNazwisko(nazwisko.getValue());
         patient.setPesel(pesel.getValue());
         patient.setEmail(email.getValue());
-        patient.setPlec(plec.getValue());
+        patient.setPlec(plec.getValue().toString());
         patient.setUlica(ulica.getValue());
         patient.setNrDomu(numer.getValue());
         patient.setMiasto(miasto.getValue());
@@ -268,7 +272,7 @@ public class EditPatientSubWindow extends Window {
         return ulica;
     }
 
-    public TextField getPlec() {
+    public ComboBox getPlec() {
         return plec;
     }
 

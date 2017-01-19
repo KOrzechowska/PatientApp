@@ -45,7 +45,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setImie(subWindow.getSelectedPatient().getImie());
         model.setNazwisko(subWindow.getSelectedPatient().getNazwisko());
         model.setPesel(subWindow.getSelectedPatient().getPesel());
-        model.setPlec(subWindow.getSelectedPatient().getPlec());
+        model.setPlec(subWindow.getSelectedPatient().getPlec().toString());
         model.setEmail(subWindow.getSelectedPatient().getEmail());
         model.setNrTel(subWindow.getSelectedPatient().getNrTel());
         model.setDataUr(subWindow.getSelectedPatient().getDataUr());
@@ -67,7 +67,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setImie(editWindow.getImie().getValue());
         model.setNazwisko(editWindow.getNazwisko().getValue());
         model.setPesel(editWindow.getPesel().getValue());
-        model.setPlec(editWindow.getPlec().getValue());
+        model.setPlec(editWindow.getPlec().getValue().toString());
         model.setEmail(editWindow.getEmail().getValue());
         model.setNrTel(editWindow.getTel().getValue());
         model.setDataUr(editWindow.getBirthDate().getValue());
@@ -102,7 +102,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setImie(addWindow.getImie().getValue());
         model.setNazwisko(addWindow.getNazwisko().getValue());
         model.setPesel(addWindow.getPesel().getValue());
-        model.setPlec(addWindow.getPlec().getValue());
+        model.setPlec(addWindow.getPlec().getValue().toString());
         model.setEmail(addWindow.getEmail().getValue());
         model.setNrTel(addWindow.getTel().getValue());
         model.setUlica(addWindow.getUlica().getValue());
@@ -120,29 +120,35 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         }
         if (source == addWindow.getSave()) {
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
-            if (addWindow.Waliduj()==0){
-                if(patientDao.check(addWindow.getPesel().getValue())) {
-                    updateNewPatient();
-                    defaultView.fillPatientPanel(model);
-                    model.setId(patientDao.save(model));
-                    addWindow.close();
-                    BadaniaDao badaniaDao = (BadaniaDao) DefaultView.context.getBean("badaniaDao");
-                    defaultView.getDodajBadanieButton().setEnabled(true);
-                    defaultView.getDodajZabiegButton().setEnabled(true);
-                    defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao, model.getId());
-                    System.out.println("ID\t" + model.getId());
-                    defaultView.setPatient(model);
-                }else
-                    Notification.show("Pacjent o numerze pesel: "+addWindow.getPesel()+ " już istnieje w bazie");
-            }
+            //if (addWindow.Waliduj()==0){
+            Validator v =new Validator(addWindow.getPesel().getValue());
+            if(v.WalidujWymagane(addWindow.getImie(), addWindow.getNazwisko(), addWindow.getBirthDate(), addWindow.getPlec()))
+                if(v.isValid())
+                    if(patientDao.check(addWindow.getPesel().getValue())) {
+                        updateNewPatient();
+                        defaultView.fillPatientPanel(model);
+                        model.setId(patientDao.save(model));
+                        addWindow.close();
+                        BadaniaDao badaniaDao = (BadaniaDao) DefaultView.context.getBean("badaniaDao");
+                        defaultView.getDodajBadanieButton().setEnabled(true);
+                        defaultView.getDodajZabiegButton().setEnabled(true);
+                        defaultView.fillTables(defaultView.getTabelaBadan(), defaultView.getTabelaZabiegow(), badaniaDao, model.getId());
+                        System.out.println("ID\t" + model.getId());
+                        defaultView.setPatient(model);
+                    }else
+                        Notification.show("Pacjent o numerze pesel: "+addWindow.getPesel()+ " już istnieje w bazie");
+                else
+                    Notification.show("Wpisany pesel jest niepoprawny");
+            else
+                Notification.show("Wypełnij wymagane dane");
 
-            if (addWindow.Waliduj()==1){
+            /*if (addWindow.Waliduj()==1){
                 Notification.show("Wpisz brakujące dane");
             }
 
             if (addWindow.Waliduj()==2){
                 Notification.show("Popraw Pesel");
-            }
+            }*/
         }
     }
 
@@ -156,7 +162,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             defaultView.getTextFieldImie().setValue(model.getImie());
             defaultView.getTextFieldNazwisko().setValue(model.getNazwisko());
             defaultView.getTextFieldPesel().setValue(model.getPesel());
-            defaultView.getTextFieldPlec().setValue(model.getPlec());
+            defaultView.getTextFieldPlec().setValue(model.getPlec().toString());
             defaultView.getTextFieldUlica().setValue(model.getUlica());
             defaultView.getTextFieldMiasto().setValue(model.getMiasto());
             defaultView.getDateField().setValue(model.getDataUr());
@@ -174,20 +180,27 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             System.out.println("ZAMKNIJ");
             editWindow.close();
         }
-        if (source == editWindow.getSave()){
-            if (editWindow.Waliduj()==0){
-                PatientDao patientDao = (PatientDao)DefaultView.context.getBean("patientDao");
-                updateEdittedPatient();
-                defaultView.fillPatientPanel(model);
-                patientDao.update(model);
-                editWindow.close();
-            }
-            if(editWindow.Waliduj()==1){
+        if (source == editWindow.getSave()) {
+            //if (editWindow.Waliduj()==0){
+            Validator v = new Validator(editWindow.getPesel().getValue());
+            if (v.WalidujWymagane(editWindow.getImie(), editWindow.getNazwisko(), editWindow.getBirthDate(), editWindow.getPlec()))
+                if (v.isValid()) {
+                    PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
+                    updateEdittedPatient();
+                    defaultView.fillPatientPanel(model);
+                    patientDao.update(model);
+                    editWindow.close();
+                }else
+                    Notification.show("Wpisany pesel jest niepoprawny");
+            else
+                Notification.show("Wypełnij wymagane dane");
+
+            /*if(editWindow.Waliduj()==1){
                 Notification.show("Wpisz brakujace dane");
             }
             if(editWindow.Waliduj()==2){
                 Notification.show("Popraw Pesel");
-            }
+            }*/
 
 
         }
@@ -224,11 +237,11 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
     @Override
     public void blur(FieldEvents.BlurEvent blurEvent) {
         if(editWindow!=null)
-        if(blurEvent.getSource()==editWindow.getPesel()) {
+        if(editWindow.getPesel().isValid() && blurEvent.getSource()==editWindow.getPesel()) {
             fillSexAndBirthDate(editWindow);
         }
         if(addWindow!=null)
-        if(blurEvent.getSource()==addWindow.getPesel()) {
+        if(addWindow.getPesel().isValid() && blurEvent.getSource()==addWindow.getPesel()) {
             fillSexAndBirthDate(addWindow);
         }
     }
