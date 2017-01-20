@@ -166,8 +166,8 @@ public class Validator {
             return false;
     }
 
-    public boolean WalidujWymagane (TextField imie, TextField nazwisko, DateField data, ComboBox plec){
-        if (imie.isValid() && nazwisko.isValid()&& data.isValid()&&plec.isValid())
+    public boolean WalidujWymagane (TextField imie, TextField nazwisko, DateField data, ComboBox plec, TextField kod, TextField telefon, TextField email){
+        if (imie.isValid() && nazwisko.isValid()&& data.isValid()&&plec.isValid()&&kod.isValid()&&telefon.isValid()&&email.isValid())
             return true;
         else
             return false;
