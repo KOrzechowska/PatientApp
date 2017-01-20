@@ -122,7 +122,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
             //if (addWindow.Waliduj()==0){
             Validator v =new Validator(addWindow.getPesel().getValue());
-            if(v.WalidujWymagane(addWindow.getImie(), addWindow.getNazwisko(), addWindow.getBirthDate(), addWindow.getPlec()))
+            if(v.WalidujWymagane(addWindow.getImie(), addWindow.getNazwisko(), addWindow.getBirthDate(), addWindow.getPlec(), addWindow.getKod(), addWindow.getTel(), addWindow.getEmail()))
                 if(v.isValid())
                     if(patientDao.check(addWindow.getPesel().getValue())) {
                         updateNewPatient();
@@ -183,7 +183,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         if (source == editWindow.getSave()) {
             //if (editWindow.Waliduj()==0){
             Validator v = new Validator(editWindow.getPesel().getValue());
-            if (v.WalidujWymagane(editWindow.getImie(), editWindow.getNazwisko(), editWindow.getBirthDate(), editWindow.getPlec()))
+            if (v.WalidujWymagane(editWindow.getImie(), editWindow.getNazwisko(), editWindow.getBirthDate(), editWindow.getPlec(), editWindow.getKod(), editWindow.getTel(), editWindow.getEmail()))
                 if (v.isValid()) {
                     PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
                     updateEdittedPatient();
@@ -191,7 +191,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
                     patientDao.update(model);
                     editWindow.close();
                 }else
-                    Notification.show("Wpisany pesel jest niepoprawny");
+                    Notification.show("Wpisany PESEL jest niepoprawny");
             else
                 Notification.show("Wypełnij wymagane dane");
 
