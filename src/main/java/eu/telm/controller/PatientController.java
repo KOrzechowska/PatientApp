@@ -113,14 +113,29 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setCzyUbezp(addWindow.getCzyUbezpieczony().getValue());
     }
 
+    public void editPatientCancel() {
+        model.setImie(defaultView.getTextFieldImie().getValue());
+        model.setNazwisko(defaultView.getTextFieldNazwisko().getValue());
+        model.setPesel(defaultView.getTextFieldPesel().getValue());
+        model.setPlec(defaultView.getTextFieldPlec().getValue().toString());
+        model.setEmail(defaultView.getTextFieldEmail().getValue());
+        model.setNrTel(defaultView.getTextFieldNrTel().getValue());
+        model.setUlica(defaultView.getTextFieldUlica().getValue());
+        model.setMiasto(defaultView.getTextFieldMiasto().getValue());
+        model.setNrDomu(defaultView.getTextFieldNrDomu().getValue());
+        model.setKodPocztowy(defaultView.getTextFieldKodPocztowy().getValue());
+        model.setDataUr(defaultView.getDataField().getValue());
+        model.setCzyUbezp(defaultView.getCheckBoxCzyUbezpieczony().getValue());
+    }
+
     public void btnCLick(Button.ClickEvent ce) {
         Object source = ce.getSource();
         if (source == addWindow.getCancel()) {
+            editPatientCancel();
             addWindow.close();
         }
         if (source == addWindow.getSave()) {
             PatientDao patientDao = (PatientDao) DefaultView.context.getBean("patientDao");
-            //if (addWindow.Waliduj()==0){
             Validator v =new Validator(addWindow.getPesel().getValue());
             if(v.WalidujWymagane(addWindow.getImie(), addWindow.getNazwisko(), addWindow.getBirthDate(), addWindow.getPlec(), addWindow.getKod(), addWindow.getTel(), addWindow.getEmail()))
                 if(v.isValid())
@@ -141,14 +156,6 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
                     Notification.show("Wpisany pesel jest niepoprawny");
             else
                 Notification.show("Wypełnij wymagane dane");
-
-            /*if (addWindow.Waliduj()==1){
-                Notification.show("Wpisz brakujące dane");
-            }
-
-            if (addWindow.Waliduj()==2){
-                Notification.show("Popraw Pesel");
-            }*/
         }
     }
 
@@ -159,16 +166,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         if(source == subWindow.getGetSelectedPatientButton()){
             updatePatient();
             subWindow.close();
-            defaultView.getTextFieldImie().setValue(model.getImie());
-            defaultView.getTextFieldNazwisko().setValue(model.getNazwisko());
-            defaultView.getTextFieldPesel().setValue(model.getPesel());
-            defaultView.getTextFieldPlec().setValue(model.getPlec().toString());
-            defaultView.getTextFieldUlica().setValue(model.getUlica());
-            defaultView.getTextFieldMiasto().setValue(model.getMiasto());
-            defaultView.getDateField().setValue(model.getDataUr());
-            defaultView.getTextFieldKodPocztowy().setValue(model.getKodPocztowy());
-            defaultView.getCheckBoxCzyUbezpieczony().setValue(model.isCzyUbezp());
-            //System.out.println(model.getId());
+            defaultView.fillPatientPanel(model);
             BadaniaDao badaniaDao = (BadaniaDao)DefaultView.context.getBean("badaniaDao");
             defaultView.getDodajBadanieButton().setEnabled(true);
             defaultView.getDodajZabiegButton().setEnabled(true);
@@ -181,7 +179,6 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             editWindow.close();
         }
         if (source == editWindow.getSave()) {
-            //if (editWindow.Waliduj()==0){
             Validator v = new Validator(editWindow.getPesel().getValue());
             if (v.WalidujWymagane(editWindow.getImie(), editWindow.getNazwisko(), editWindow.getBirthDate(), editWindow.getPlec(), editWindow.getKod(), editWindow.getTel(), editWindow.getEmail()))
                 if (v.isValid()) {
@@ -194,15 +191,6 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
                     Notification.show("Wpisany PESEL jest niepoprawny");
             else
                 Notification.show("Wypełnij wymagane dane");
-
-            /*if(editWindow.Waliduj()==1){
-                Notification.show("Wpisz brakujace dane");
-            }
-            if(editWindow.Waliduj()==2){
-                Notification.show("Popraw Pesel");
-            }*/
-
-
         }
         if (source == subWindow.getCreateNewPatientButton()) {
             UI ui = defaultView.getUI();

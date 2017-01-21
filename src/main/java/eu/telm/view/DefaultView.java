@@ -464,7 +464,7 @@ public class DefaultView extends VerticalLayout implements View {
         return tf2;
     }
     public TextField getTextFieldPesel(){return tf3;}
-    public TextField getTextFieldDataUr(){return tf4;}
+    public DateField getDataField(){return dateField;}
     public TextField getTextFieldPlec(){return tf5;}
     public TextField getTextFieldUlica(){return tf6;}
     public TextField getTextFieldMiasto(){return tf7;}
