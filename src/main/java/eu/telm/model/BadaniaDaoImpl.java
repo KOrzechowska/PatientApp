@@ -7,6 +7,9 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Repository;
 
 import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,13 @@ public class BadaniaDaoImpl implements BadaniaDao {
     public List<Realizacje> findByDate(java.util.Date date) {
         Session session = this.sessionFactory.openSession();
         Criteria criteria = session.createCriteria(Realizacje.class);
-        criteria = criteria.add(Restrictions.eq("data", date));
+        DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        String result = formatter.format(date);
+        try {
+            criteria = criteria.add(Restrictions.eq("data", formatter.parse(result)));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         List<Realizacje> realizacjes = criteria.list();
         System.out.println("wynik\t"+realizacjes.size());
         for(Realizacje realizacje : realizacjes)

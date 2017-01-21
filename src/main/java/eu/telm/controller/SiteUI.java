@@ -83,6 +83,7 @@ public class SiteUI extends UI {
 
             }
         });
+
     }
 
     private Button createNavigationButton(String caption,FontAwesome fontAwesome, final String viewName) {
