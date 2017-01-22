@@ -137,6 +137,9 @@ public class DefaultView extends VerticalLayout implements View {
                // editWindow.setCController(patientController);
                // patientController.setModel(patient);
                 patientController.fillEditWindow();
+
+                if(!editWindow.getPesel().isEmpty())
+                    patientController.zablokuj(editWindow);
             }
         });
 
