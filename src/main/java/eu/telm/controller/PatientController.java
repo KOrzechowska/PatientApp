@@ -228,7 +228,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         if(editWindow.getPesel().isValid() && blurEvent.getSource()==editWindow.getPesel()) {
             fillSexAndBirthDate(editWindow);
         }
-        if(addWindow!=null)
+         if(addWindow!=null)
         if(addWindow.getPesel().isValid() && blurEvent.getSource()==addWindow.getPesel()) {
             fillSexAndBirthDate(addWindow);
         }
@@ -243,6 +243,17 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
             System.out.println("data z pesel\t" + date + "\tplec\t" + validator.getSex() + "\tdata\t" + writeFormat.format(date));
             window.getBirthDate().setValue(date);
             window.getPlec().setValue(validator.getSex());
+            zablokuj(window);
         }
+        if(!validator.isValid()||window.getPesel().isEmpty())
+            odblokuj(window);
+    }
+    private void odblokuj(EditPatientSubWindow window){
+        window.getPlec().setEnabled(true);
+        window.getBirthDate().setEnabled(true);
+    }
+    public void zablokuj(EditPatientSubWindow window){
+        window.getPlec().setEnabled(false);
+        window.getBirthDate().setEnabled(false);
     }
 }
