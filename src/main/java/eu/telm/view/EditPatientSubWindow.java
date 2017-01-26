@@ -78,7 +78,7 @@ public class EditPatientSubWindow extends Window {
         imie.setRequired(true);
         nazwisko.addValidator(new StringLengthValidator("Podaj nazwisko", 2, 20, false));
         nazwisko.setRequired(true);
-        email.addValidator(new RegexpValidator("^([\\w]+[-_]?[\\w]*)+@[\\w]+.[\\w]+$", "Podaj e-mail, np. jkowalski@gmail.com"));
+        email.addValidator(new RegexpValidator("^([\\w]+[-_.]?[\\w]*)+@[\\w]+.[\\w]+$", "Podaj e-mail, np. jkowalski@gmail.com"));
         tel.addValidator(new RegexpValidator("[0-9]{9}", "Tylko cyfry"));
         kod.addValidator(new RegexpValidator("^[0-9]{2}-[0-9]{3}$", "Podaj kod w formacie xx-xxx"));
         //pesel.addValidator(new StringLengthValidator("Podaj PESEL", 11, 11, false));
