@@ -236,7 +236,7 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
 
     private void fillSexAndBirthDate(EditPatientSubWindow window){
         Validator validator = new Validator(window.getPesel().getValue());
-        if (validator.isValid()) {
+        if (validator.isValid()&&!window.getPesel().isEmpty()) {
             DateFormat writeFormat = new SimpleDateFormat("yyyy-MM-dd");
             System.out.println("rok z pesel\t" + validator.getBirthYear() + validator.getBirthDay() + validator.getBirthMonth());
             java.util.Date date = new GregorianCalendar(validator.getBirthYear(), validator.getBirthMonth()-1, validator.getBirthDay()).getTime();
