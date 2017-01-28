@@ -4,6 +4,7 @@ import eu.telm.view.SimpleLoginView;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.List;
 
@@ -20,26 +21,39 @@ public class Patient  implements IAuditLog{
 
     @Column
     @NotNull
+    @Size(max=20)
     private String imie;
     @Column
+    @NotNull
+    @Size(max=20)
     private String nazwisko;
     @Column
+    @Size(max=11)
     private String pesel;
     @Column
+    @NotNull
     private Date dataUr;
     @Column
+    @NotNull
+    @Size(max=20)
     private String plec;
     @Column
+    @Size(max=20)
     private String nrTel;
     @Column
+    @Size(max=50)
     private String email;
     @Column
+    @Size(max = 6)
     private String kodPocztowy;
     @Column
+    @Size(max=30)
     private String miasto;
     @Column
+    @Size(max=30)
     private String ulica;
     @Column
+    @Size(max=10)
     private String nrDomu;
     @Column
     private boolean czyUbezp;

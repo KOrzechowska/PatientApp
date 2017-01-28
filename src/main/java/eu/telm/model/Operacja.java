@@ -2,6 +2,7 @@ package eu.telm.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 /**
@@ -17,11 +18,15 @@ public class Operacja {
     private Long id;
     @Column
     @NotNull
+    @Size(max=50)
     private String nazwa;
     @Column
+    @NotNull
     private String opis;
     public enum typ{BADANIE, ZABIEG};
     @Column
+    @NotNull
+    @Size(max=7)
     @Enumerated(EnumType.STRING)
     private typ typ;
 

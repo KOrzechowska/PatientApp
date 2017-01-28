@@ -26,11 +26,11 @@ public class Realizacje implements IAuditLog{
     private String uwagi;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="patient_id", nullable=true)
+    @JoinColumn(name="patient_id", nullable=false)
     private Patient patient;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="operacja_id", nullable=true)
+    @JoinColumn(name="operacja_id", nullable=false)
     private Operacja operacja;
 
     public Long getId() {
