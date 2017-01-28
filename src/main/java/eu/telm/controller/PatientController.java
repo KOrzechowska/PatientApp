@@ -1,11 +1,9 @@
 package eu.telm.controller;
 
-import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.FieldEvents;
 import com.vaadin.ui.*;
 import eu.telm.model.BadaniaDao;
 import eu.telm.model.PatientDao;
-import eu.telm.model.Realizacje;
 import eu.telm.model.Patient;
 import eu.telm.util.Validator;
 import eu.telm.view.DefaultView;
@@ -13,13 +11,9 @@ import eu.telm.view.SearchPatientSubWindow;
 import eu.telm.view.EditPatientSubWindow;
 
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 /**
  * Created by kasia on 13.11.16.
@@ -47,13 +41,13 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setPesel(subWindow.getSelectedPatient().getPesel());
         model.setPlec(subWindow.getSelectedPatient().getPlec().toString());
         model.setEmail(subWindow.getSelectedPatient().getEmail());
-        model.setNrTel(subWindow.getSelectedPatient().getNrTel());
-        model.setDataUr(subWindow.getSelectedPatient().getDataUr());
+        model.setNr_tel(subWindow.getSelectedPatient().getNr_tel());
+        model.setData_ur(subWindow.getSelectedPatient().getData_ur());
         model.setUlica(subWindow.getSelectedPatient().getUlica());
         model.setMiasto(subWindow.getSelectedPatient().getMiasto());
-        model.setNrDomu(subWindow.getSelectedPatient().getNrDomu());
-        model.setKodPocztowy(subWindow.getSelectedPatient().getKodPocztowy());
-        model.setCzyUbezp(subWindow.getSelectedPatient().isCzyUbezp());
+        model.setNr_domu(subWindow.getSelectedPatient().getNr_domu());
+        model.setKod_pocztowy(subWindow.getSelectedPatient().getKod_pocztowy());
+        model.setCzy_ubezp(subWindow.getSelectedPatient().isCzy_ubezp());
         //System.out.println(model.getImie());
     }
 
@@ -69,14 +63,14 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setPesel(editWindow.getPesel().getValue());
         model.setPlec(editWindow.getPlec().getValue().toString());
         model.setEmail(editWindow.getEmail().getValue());
-        model.setNrTel(editWindow.getTel().getValue());
-        model.setDataUr(editWindow.getBirthDate().getValue());
-        System.out.println("Data ur z updateP:\t"+model.getDataUr());
+        model.setNr_tel(editWindow.getTel().getValue());
+        model.setData_ur(editWindow.getBirthDate().getValue());
+        System.out.println("Data ur z updateP:\t"+model.getData_ur());
         model.setUlica(editWindow.getUlica().getValue());
         model.setMiasto(editWindow.getMiasto().getValue());
-        model.setNrDomu(editWindow.getNumer().getValue());
-        model.setKodPocztowy(editWindow.getKod().getValue());
-        model.setCzyUbezp(editWindow.getCzyUbezpieczony().getValue());
+        model.setNr_domu(editWindow.getNumer().getValue());
+        model.setKod_pocztowy(editWindow.getKod().getValue());
+        model.setCzy_ubezp(editWindow.getCzyUbezpieczony().getValue());
 
     }
 
@@ -87,13 +81,13 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         editWindow.ustawPesel(model.getPesel());
         editWindow.ustawEmail(model.getEmail());
         editWindow.ustawPlec(model.getPlec());
-        editWindow.ustawNumer(model.getNrDomu());
+        editWindow.ustawNumer(model.getNr_domu());
         editWindow.ustawMiasto(model.getMiasto());
         editWindow.ustawUlice(model.getUlica());
-        editWindow.ustawKod(model.getKodPocztowy());
-        editWindow.ustawTelefon(model.getNrTel());
-        editWindow.ustawDateUrodzenia(model.getDataUr());
-        editWindow.ustawCzyUbezpieczony(model.isCzyUbezp());
+        editWindow.ustawKod(model.getKod_pocztowy());
+        editWindow.ustawTelefon(model.getNr_tel());
+        editWindow.ustawDateUrodzenia(model.getData_ur());
+        editWindow.ustawCzyUbezpieczony(model.isCzy_ubezp());
     }
 
     public void updateNewPatient() {
@@ -104,13 +98,13 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setPesel(addWindow.getPesel().getValue());
         model.setPlec(addWindow.getPlec().getValue().toString());
         model.setEmail(addWindow.getEmail().getValue());
-        model.setNrTel(addWindow.getTel().getValue());
+        model.setNr_tel(addWindow.getTel().getValue());
         model.setUlica(addWindow.getUlica().getValue());
         model.setMiasto(addWindow.getMiasto().getValue());
-        model.setNrDomu(addWindow.getNumer().getValue());
-        model.setKodPocztowy(addWindow.getKod().getValue());
-        model.setDataUr(addWindow.getBirthDate().getValue());
-        model.setCzyUbezp(addWindow.getCzyUbezpieczony().getValue());
+        model.setNr_domu(addWindow.getNumer().getValue());
+        model.setKod_pocztowy(addWindow.getKod().getValue());
+        model.setData_ur(addWindow.getBirthDate().getValue());
+        model.setCzy_ubezp(addWindow.getCzyUbezpieczony().getValue());
     }
 
     public void editPatientCancel() {
@@ -119,13 +113,13 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setPesel(defaultView.getTextFieldPesel().getValue());
         model.setPlec(defaultView.getTextFieldPlec().getValue().toString());
         model.setEmail(defaultView.getTextFieldEmail().getValue());
-        model.setNrTel(defaultView.getTextFieldNrTel().getValue());
+        model.setNr_tel(defaultView.getTextFieldNrTel().getValue());
         model.setUlica(defaultView.getTextFieldUlica().getValue());
         model.setMiasto(defaultView.getTextFieldMiasto().getValue());
-        model.setNrDomu(defaultView.getTextFieldNrDomu().getValue());
-        model.setKodPocztowy(defaultView.getTextFieldKodPocztowy().getValue());
-        model.setDataUr(defaultView.getDataField().getValue());
-        model.setCzyUbezp(defaultView.getCheckBoxCzyUbezpieczony().getValue());
+        model.setNr_domu(defaultView.getTextFieldNrDomu().getValue());
+        model.setKod_pocztowy(defaultView.getTextFieldKodPocztowy().getValue());
+        model.setData_ur(defaultView.getDataField().getValue());
+        model.setCzy_ubezp(defaultView.getCheckBoxCzyUbezpieczony().getValue());
     }
 
     public void btnCLick(Button.ClickEvent ce) {

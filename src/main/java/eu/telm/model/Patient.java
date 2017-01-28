@@ -21,42 +21,32 @@ public class Patient  implements IAuditLog{
 
     @Column
     @NotNull
-    @Size(max=20)
     private String imie;
     @Column
     @NotNull
-    @Size(max=20)
     private String nazwisko;
     @Column
-    @Size(max=11)
     private String pesel;
     @Column
     @NotNull
-    private Date dataUr;
+    private Date data_ur;
     @Column
     @NotNull
-    @Size(max=20)
     private String plec;
     @Column
-    @Size(max=20)
-    private String nrTel;
+    private String nr_tel;
     @Column
-    @Size(max=50)
     private String email;
     @Column
-    @Size(max = 6)
-    private String kodPocztowy;
+    private String kod_pocztowy;
     @Column
-    @Size(max=30)
     private String miasto;
     @Column
-    @Size(max=30)
     private String ulica;
     @Column
-    @Size(max=10)
-    private String nrDomu;
+    private String nr_domu;
     @Column
-    private boolean czyUbezp;
+    private boolean czy_ubezp;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "patient")
     private List<Realizacje> realizacjeList;
@@ -124,12 +114,12 @@ public class Patient  implements IAuditLog{
         this.pesel = pesel;
     }
 
-    public Date getDataUr() {
-        return dataUr;
+    public Date getData_ur() {
+        return data_ur;
     }
 
-    public void setDataUr(Date dataUr) {
-        this.dataUr = dataUr;
+    public void setData_ur(Date data_ur) {
+        this.data_ur = data_ur;
     }
 
     public String getPlec() {
@@ -140,12 +130,12 @@ public class Patient  implements IAuditLog{
         this.plec = plec;
     }
 
-    public String getNrTel() {
-        return nrTel;
+    public String getNr_tel() {
+        return nr_tel;
     }
 
-    public void setNrTel(String nrTel) {
-        this.nrTel = nrTel;
+    public void setNr_tel(String nr_tel) {
+        this.nr_tel = nr_tel;
     }
 
     public String getEmail() {
@@ -156,12 +146,12 @@ public class Patient  implements IAuditLog{
         this.email = email;
     }
 
-    public String getKodPocztowy() {
-        return kodPocztowy;
+    public String getKod_pocztowy() {
+        return kod_pocztowy;
     }
 
-    public void setKodPocztowy(String kodPocztowy) {
-        this.kodPocztowy = kodPocztowy;
+    public void setKod_pocztowy(String kod_pocztowy) {
+        this.kod_pocztowy = kod_pocztowy;
     }
 
     public String getMiasto() {
@@ -180,20 +170,20 @@ public class Patient  implements IAuditLog{
         this.ulica = ulica;
     }
 
-    public String getNrDomu() {
-        return nrDomu;
+    public String getNr_domu() {
+        return nr_domu;
     }
 
-    public void setNrDomu(String nrDomu) {
-        this.nrDomu = nrDomu;
+    public void setNr_domu(String nr_domu) {
+        this.nr_domu = nr_domu;
     }
 
-    public boolean isCzyUbezp() {
-        return czyUbezp;
+    public boolean isCzy_ubezp() {
+        return czy_ubezp;
     }
 
-    public void setCzyUbezp(boolean czyUbezp) {
-        this.czyUbezp = czyUbezp;
+    public void setCzy_ubezp(boolean czy_ubezp) {
+        this.czy_ubezp = czy_ubezp;
     }
 
 

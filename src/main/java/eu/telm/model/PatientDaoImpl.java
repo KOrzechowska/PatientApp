@@ -1,7 +1,6 @@
 package eu.telm.model;
 
 import eu.telm.controller.AuditLogInterceptor;
-import eu.telm.dataBase.HibernateUtil;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -77,6 +76,7 @@ public class PatientDaoImpl implements PatientDao {
 
     @Override
     public Long save(Patient e) {
+        System.out.println(e.getImie()+"\t"+ e.getData_ur());
         AuditLogInterceptor interceptor = new AuditLogInterceptor();
         Session session = this.sessionFactory.withOptions().interceptor(interceptor).openSession();
         interceptor.setSession(session);
@@ -95,15 +95,15 @@ public class PatientDaoImpl implements PatientDao {
         Patient patient = (Patient) session.load(Patient.class, p.getId());
         patient.setImie(p.getImie());
         patient.setNazwisko(p.getNazwisko());
-        patient.setDataUr(p.getDataUr());
+        patient.setData_ur(p.getData_ur());
         patient.setPesel(p.getPesel());
         patient.setPlec(p.getPlec());
-        patient.setNrDomu(p.getNrDomu());
+        patient.setNr_domu(p.getNr_domu());
         patient.setMiasto(p.getMiasto());
-        patient.setKodPocztowy(p.getKodPocztowy());
-        patient.setNrTel(p.getNrTel());
+        patient.setKod_pocztowy(p.getKod_pocztowy());
+        patient.setNr_tel(p.getNr_tel());
         patient.setEmail(p.getEmail());
-        patient.setCzyUbezp(p.isCzyUbezp());
+        patient.setCzy_ubezp(p.isCzy_ubezp());
 
         session.getTransaction().commit();
         session.close();

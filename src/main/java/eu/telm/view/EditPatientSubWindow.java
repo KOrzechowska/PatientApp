@@ -8,11 +8,7 @@ import eu.telm.model.Patient;
 import eu.telm.util.ButtonFactory;
 import eu.telm.util.RowFactory;
 import eu.telm.util.TextFieldFactory;
-import eu.telm.util.Validator;
 
-import javax.swing.text.MaskFormatter;
-import javax.xml.bind.ValidationEvent;
-import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -153,11 +149,11 @@ public class EditPatientSubWindow extends Window {
         patient.setEmail(email.getValue());
         patient.setPlec(plec.getValue().toString());
         patient.setUlica(ulica.getValue());
-        patient.setNrDomu(numer.getValue());
+        patient.setNr_domu(numer.getValue());
         patient.setMiasto(miasto.getValue());
-        patient.setKodPocztowy(kod.getValue());
-        patient.setNrTel(tel.getValue());
-        //    patient.setDataUr(birthDate.getValue());
+        patient.setKod_pocztowy(kod.getValue());
+        patient.setNr_tel(tel.getValue());
+        //    patient.setData_ur(birthDate.getValue());
 
     }
 

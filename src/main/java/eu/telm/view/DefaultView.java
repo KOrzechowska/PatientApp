@@ -441,15 +441,15 @@ public class DefaultView extends VerticalLayout implements View {
         tf1.setValue(model.getImie());
         tf2.setValue(model.getNazwisko());
         tf3.setValue(model.getPesel());
-        dateField.setValue(model.getDataUr());
+        dateField.setValue(model.getData_ur());
         tf5.setValue(model.getPlec());
         tf6.setValue(model.getUlica());
         tf7.setValue(model.getMiasto());
-        tf8.setValue(model.getNrDomu());
-        tf9.setValue(model.getKodPocztowy());
-        tf10.setValue(model.getNrTel());
+        tf8.setValue(model.getNr_domu());
+        tf9.setValue(model.getKod_pocztowy());
+        tf10.setValue(model.getNr_tel());
         tf11.setValue(model.getEmail());
-        isInsured.setValue(model.isCzyUbezp());
+        isInsured.setValue(model.isCzy_ubezp());
     }
 
     public DateField getDateField() {
