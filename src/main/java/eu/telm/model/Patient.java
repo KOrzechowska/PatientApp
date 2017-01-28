@@ -1,6 +1,7 @@
 package eu.telm.model;
 
 import eu.telm.view.SimpleLoginView;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -21,29 +22,40 @@ public class Patient  implements IAuditLog{
 
     @Column
     @NotNull
+    @Size(min=2, max=20)
     private String imie;
     @Column
     @NotNull
+    @Size(min=2, max=20)
     private String nazwisko;
     @Column
+    @Size(min=0, max=11)
     private String pesel;
     @Column
     @NotNull
+    @Type(type="date")
     private Date data_ur;
     @Column
     @NotNull
+    @Size(min=7, max=9)
     private String plec;
     @Column
+    @Size(min=0, max=20)
     private String nr_tel;
     @Column
+    @Size(min=0, max=50)
     private String email;
     @Column
+    @Size(min=0, max=6)
     private String kod_pocztowy;
     @Column
+    @Size(min=0, max=30)
     private String miasto;
     @Column
+    @Size(min=0, max=30)
     private String ulica;
     @Column
+    @Size(min=0, max=30)
     private String nr_domu;
     @Column
     private boolean czy_ubezp;

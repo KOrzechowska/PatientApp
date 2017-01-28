@@ -1,6 +1,7 @@
 package eu.telm.model;
 
 import eu.telm.view.SimpleLoginView;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +20,7 @@ public class Realizacje implements IAuditLog{
     private Long id;
     @Column
     @NotNull
+    @Type(type="date")
     private Date data;
     @Column
     private String wynik;

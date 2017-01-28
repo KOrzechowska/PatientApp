@@ -82,6 +82,12 @@ public class EditPatientSubWindow extends Window {
         pesel.addValidator(new RegexpValidator("[-]?[0-9]*\\.?,?[0-9]+", "Tylko cyfry"));
         plec.setRequired(true);
         birthDate.setRequired(true);
+        miasto.addValidator( new StringLengthValidator( "Nazwa miasta jest za długa",0, 30,false ) );
+        email.addValidator( new StringLengthValidator( "Adres email jest za długi",0, 50,false ) );
+        kod.addValidator( new StringLengthValidator( "Kod pocztowy jest za długi",0, 6 ,false ) );
+        numer.addValidator( new StringLengthValidator( "Numer domu jest za długi",0, 30,false ) );
+        tel.addValidator( new StringLengthValidator( "Nazwa miasta jest za długa",0, 20,false ) );
+        ulica.addValidator( new StringLengthValidator( "Nazwa ulicy jest za długa",0, 30,false ) );
     }
 
     public void setClickController(Button.ClickListener ac){

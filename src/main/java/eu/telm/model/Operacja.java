@@ -18,7 +18,7 @@ public class Operacja {
     private Long id;
     @Column
     @NotNull
-    @Size(max=50)
+    @Size(min=1, max=50)
     private String nazwa;
     @Column
     @NotNull
@@ -26,7 +26,7 @@ public class Operacja {
     public enum typ{BADANIE, ZABIEG};
     @Column
     @NotNull
-    @Size(max=7)
+    @Size(min=6, max=7)
     @Enumerated(EnumType.STRING)
     private typ typ;
 

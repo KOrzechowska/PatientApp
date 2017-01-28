@@ -99,6 +99,7 @@ public class PatientDaoImpl implements PatientDao {
         patient.setPesel(p.getPesel());
         patient.setPlec(p.getPlec());
         patient.setNr_domu(p.getNr_domu());
+        patient.setUlica( p.getUlica() );
         patient.setMiasto(p.getMiasto());
         patient.setKod_pocztowy(p.getKod_pocztowy());
         patient.setNr_tel(p.getNr_tel());
