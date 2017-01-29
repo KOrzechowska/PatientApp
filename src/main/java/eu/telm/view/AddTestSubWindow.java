@@ -1,6 +1,7 @@
 package eu.telm.view;
 
 import com.sun.jndi.toolkit.dir.SearchFilter;
+import com.vaadin.data.validator.StringLengthValidator;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.*;
 import eu.telm.model.PatientDao;
@@ -37,8 +38,10 @@ public class AddTestSubWindow extends Window {
         dateField = TextFieldFactory.createDateField("Data", true, textFields);
         dateField.setRequired(true);
         resultTextField = TextFieldFactory.createTextField("Wynik", false, textFields);
+        resultTextField.addValidator( new StringLengthValidator( "Opis wyniku jest zbyt długi",0, 255,false ) );
         resultTextField.setHeight("60");
         commentsTextField = TextFieldFactory.createTextField("Uwagi", false, textFields);
+        commentsTextField.addValidator( new StringLengthValidator( "Opis uwag jest zbyt długi",0,255,false ));
         commentsTextField.setHeight("60");
         addTestButton = ButtonFactory.createButton("Dodaj", FontAwesome.STETHOSCOPE, "addButton");
         setContent(mainLayout);

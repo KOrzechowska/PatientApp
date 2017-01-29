@@ -77,16 +77,12 @@ public class EditPatientSubWindow extends Window {
         email.addValidator(new RegexpValidator("^([\\w]+[-_.]?[\\w]*)+@[\\w]+.[\\w]+$", "Podaj e-mail, np. jkowalski@gmail.com"));
         tel.addValidator(new RegexpValidator("[0-9]{9}", "Tylko cyfry"));
         kod.addValidator(new RegexpValidator("^[0-9]{2}-[0-9]{3}$", "Podaj kod w formacie xx-xxx"));
-        //pesel.addValidator(new StringLengthValidator("Podaj PESEL", 11, 11, false));
-        //pesel.setRequired(true);
         pesel.addValidator(new RegexpValidator("[-]?[0-9]*\\.?,?[0-9]+", "Tylko cyfry"));
         plec.setRequired(true);
         birthDate.setRequired(true);
         miasto.addValidator( new StringLengthValidator( "Nazwa miasta jest za długa",0, 30,false ) );
         email.addValidator( new StringLengthValidator( "Adres email jest za długi",0, 50,false ) );
-        kod.addValidator( new StringLengthValidator( "Kod pocztowy jest za długi",0, 6 ,false ) );
         numer.addValidator( new StringLengthValidator( "Numer domu jest za długi",0, 30,false ) );
-        tel.addValidator( new StringLengthValidator( "Nazwa miasta jest za długa",0, 20,false ) );
         ulica.addValidator( new StringLengthValidator( "Nazwa ulicy jest za długa",0, 30,false ) );
     }
 

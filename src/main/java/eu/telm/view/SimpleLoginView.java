@@ -58,7 +58,7 @@ public class SimpleLoginView extends CustomComponent implements View,
 
         // Add both to a panel
         VerticalLayout fields = new VerticalLayout(user, password, loginButton);
-        fields.setCaption("Please login to access the application. (test@test.com/passw0rd)");
+        fields.setCaption("Zaloguj sie do aplikacji patientApp");
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, false));
         fields.setSizeUndefined();

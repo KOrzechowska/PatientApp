@@ -411,8 +411,8 @@ public class DefaultView extends VerticalLayout implements View {
                 });
 
             }else{
-                Notification.show("Nie usuwamy badań, które już wykonano\t"+"dfs"+tabela.getContainerDataSource().getItem(selected)
-                        .getItemProperty("wynik").getValue()+"dsd");
+                Notification.show("Nie usuwamy badań, które już wykonano\t"+" "+tabela.getContainerDataSource().getItem(selected)
+                        .getItemProperty("wynik").getValue());
             }
         }
     }
