@@ -155,8 +155,6 @@ public class EditPatientSubWindow extends Window {
         patient.setMiasto(miasto.getValue());
         patient.setKod_pocztowy(kod.getValue());
         patient.setNr_tel(tel.getValue());
-        //    patient.setData_ur(birthDate.getValue());
-
     }
 
     public Button getSave() {

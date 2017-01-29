@@ -48,7 +48,6 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setNr_domu(subWindow.getSelectedPatient().getNr_domu());
         model.setKod_pocztowy(subWindow.getSelectedPatient().getKod_pocztowy());
         model.setCzy_ubezp(subWindow.getSelectedPatient().isCzy_ubezp());
-        //System.out.println(model.getImie());
     }
 
     /**
@@ -65,13 +64,11 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
         model.setEmail(editWindow.getEmail().getValue());
         model.setNr_tel(editWindow.getTel().getValue());
         model.setData_ur(editWindow.getBirthDate().getValue());
-        System.out.println("Data ur z updateP:\t"+model.getData_ur());
         model.setUlica(editWindow.getUlica().getValue());
         model.setMiasto(editWindow.getMiasto().getValue());
         model.setNr_domu(editWindow.getNumer().getValue());
         model.setKod_pocztowy(editWindow.getKod().getValue());
         model.setCzy_ubezp(editWindow.getCzyUbezpieczony().getValue());
-
     }
 
     public void fillEditWindow(){
@@ -214,7 +211,6 @@ public class PatientController implements Button.ClickListener, FieldEvents.Blur
     public void setModel(Patient model) {
         this.model = model;
     }
-
 
     @Override
     public void blur(FieldEvents.BlurEvent blurEvent) {

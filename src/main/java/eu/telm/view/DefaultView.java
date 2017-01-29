@@ -45,7 +45,7 @@ public class DefaultView extends VerticalLayout implements View {
     private TestController testController;
     private AddTestSubWindow subWindowAddTreatment;
     private TestController treatmentController;
-    private TextField tf1, tf2, tf3, tf4, tf5, tf6, tf7, tf8, tf9, tf10, tf11;
+    private TextField tf1, tf2, tf3, tf5, tf6, tf7, tf8, tf9, tf10, tf11;
     private Grid tabelaBadan, tabelaZabiegow;
     private DateField dateField;
     private Button dodajBadanie, dodajZabieg;
@@ -134,8 +134,6 @@ public class DefaultView extends VerticalLayout implements View {
                 ui.addWindow(editWindow);
                 editWindow.setClickController(patientController);
                 editWindow.setFocusController(patientController);
-               // editWindow.setCController(patientController);
-               // patientController.setModel(patient);
                 patientController.fillEditWindow();
 
                 if(!editWindow.getPesel().isEmpty())
@@ -154,7 +152,6 @@ public class DefaultView extends VerticalLayout implements View {
         tabelaBadan.setStyleName("tabelaBadan");
         tabelaBadan.setSizeFull();
         tabelaBadan.setHeightByRows(1);
-        //tabelaBadan.setColumns("operacja.nazwa","data", "wynik", "uwagi");
 
         tabelaBadan.addColumn("nazwa", String.class);
         tabelaBadan.addColumn("data", String.class);
@@ -164,12 +161,6 @@ public class DefaultView extends VerticalLayout implements View {
         Grid.Column column = tabelaBadan.getColumn("id");
         column.setHidden(true);
 
-        /*final BeanItemContainer<Realizacje> ds = new BeanItemContainer<Realizacje>(Realizacje.class, realizacjeList);
-        ds.addNestedContainerBean("operacja");
-        tabelaBadan.setContainerDataSource(
-                new BeanItemContainer(Realizacje.class, badaniaDao.findByPatient_Id(10L))
-        );*/
-        //VerticalLayout mainLayout = new VerticalLayout(form, tabelaBadan);
         form.addComponent(tabelaBadan);
 
         List<Component> buttonListBadanie = new ArrayList<>();
@@ -337,9 +328,7 @@ public class DefaultView extends VerticalLayout implements View {
                 testController.fillWindow(Long.parseLong(tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("id").toString()), tabelaBadan.getContainerDataSource().getItem(selected).getItemProperty("nazwa").toString());
                 ButtonFactory.setEnabledButtons(buttonListBadanie, 3, false);
             }
-
         });
-
     }
 
     public void fillTables(Grid tabelaBadan, Grid tabelaZabiegow, BadaniaDao badaniaDao, long id){
@@ -356,19 +345,12 @@ public class DefaultView extends VerticalLayout implements View {
                 zabiegiTable.add(new Object[]{realizacje.getOperacja().getNazwa(),
                         writeFormat.format(realizacje.getData()), realizacje.getWynik(), realizacje.getUwagi(), realizacje.getId()});
         }
-        //tabelaBadan.getContainerDataSource().removeAllItems();
-        //tabelaZabiegow.getContainerDataSource().removeAllItems();
-        //if(tabelaBadan.getContainerDataSource().size()>0 || tabelaZabiegow.getContainerDataSource().size()>0 )
-        // tabelaBadan.addColumn("id", Long.class);
         tabelaBadan.getContainerDataSource().removeAllItems();
         for(Object[] objects : realizacjeTable)
             tabelaBadan.addRow(objects);
-        //tabelaBadan.removeColumn("id");
-        ///tabelaZabiegow.addColumn("id", Long.class);
         tabelaZabiegow.getContainerDataSource().removeAllItems();
         for(Object[] objects : zabiegiTable)
             tabelaZabiegow.addRow(objects);
-        //tabelaZabiegow.removeColumn("id");
     }
 
 
@@ -455,11 +437,9 @@ public class DefaultView extends VerticalLayout implements View {
     public DateField getDateField() {
         return dateField;
     }
-
     public void setDateField(DateField dateField) {
         this.dateField = dateField;
     }
-
     public TextField getTextFieldImie(){
         return tf1;
     }
@@ -477,11 +457,9 @@ public class DefaultView extends VerticalLayout implements View {
     public TextField getTextFieldEmail(){return tf11;}
     public CheckBox getCheckBoxCzyUbezpieczony(){return isInsured;}
     public Grid getTabelaBadan(){return tabelaBadan;}
-
     public Grid getTabelaZabiegow() {
         return tabelaZabiegow;
     }
-
     public BadaniaDao getBadaniaDao(){return badaniaDao;}
     public OperacjeDao getOperacjeDao(){return operacjeDao;}
     public Button getDodajBadanieButton() {return dodajBadanie;}

@@ -35,11 +35,7 @@ public class SearchPatientSubWindow extends Window {
         setIcon(FontAwesome.USERS);
         center();
         setModal(true);
-
-
         grid = new Grid();
-
-
         this.repo = patientDao;
 
         VerticalLayout mainLayout = new VerticalLayout();
@@ -93,10 +89,9 @@ public class SearchPatientSubWindow extends Window {
     }
 
     public void setClickController(Button.ClickListener ac){
-
         this.getSelectedPatientButton.addClickListener(ac);
-
     }
+
     public void setCController(Button.ClickListener ac){this.createNewPatientButton.addClickListener(ac);}
     public Button getCreateNewPatientButton(){return createNewPatientButton;}
     public Button getGetSelectedPatientButton(){
@@ -105,7 +100,6 @@ public class SearchPatientSubWindow extends Window {
     public Patient getSelectedPatient(){
         return (Patient) grid.getSelectedRow();
     }
-
 
     private void listCustomers(){
         createNewPatientButton.setEnabled(true);

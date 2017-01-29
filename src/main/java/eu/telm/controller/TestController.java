@@ -41,7 +41,6 @@ public class TestController implements Button.ClickListener {
         operacjeDao = (OperacjeDao)DefaultView.context.getBean("operacjeDao");
     }
 
-
     @Override
     public void buttonClick(Button.ClickEvent clickEvent) {
         Object source = clickEvent.getSource();
@@ -120,6 +119,7 @@ public class TestController implements Button.ClickListener {
             }
         }
     }
+
     public void fillComboBox(Boolean badania, Boolean zabiegi){
         OperacjeDao operacjeDao = (OperacjeDao) DefaultView.context.getBean("operacjeDao");
         if(badania)
